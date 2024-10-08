@@ -11,3 +11,11 @@
 ## Inviscid Burger's
 
 * Covered in section 2.3 of Choski
+
+## Reading List
+* https://arxiv.org/pdf/1503.09079
+* https://math.bu.edu/people/mabeck/Beck2012_burgers.pdf
+* https://www.math.mcgill.ca/gantumur/math581w19/BurgersEquation_ZhenheZhang.pdf
+* https://math.nyu.edu/~tabak/PDEs/The_Burgers-Equation.pdf
+* https://www.math.umd.edu/~mariakc/burgers.pdf
+* https://onlinelibrary.wiley.com/doi/10.1155/2023/5102374
