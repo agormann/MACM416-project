@@ -1,7 +1,7 @@
 \documentclass{myproject}
 
 % title setup
-\title{Numerical Analysis of Burger's Equation\footnote{Placeholder title!}}
+\title{Numerical Analysis of Burgers' Equation\footnote{Placeholder title!}}
 \date{}
 \author{
     Andre Gormann\\
@@ -14,19 +14,55 @@
 % bibliography
 \addbibresource{references.bib}
 
+\renewcommand*{\thefootnote}{[\arabic{footnote}]}
+
 \begin{document}
 
 % title creation
 \maketitle
 
 \section{Introduction}
-Consider the initial value problem
+
+\subsection{The Inviscid Burgers' Equation}
+
+We have elected to study the Burgers' equation, or more correctly, the inviscid Burgers' equation.\footnote{We may decide later on to study the viscous Burgers' equation.} Given $u \in C^1(\Omega)$, where $\Omega \subset \R^{n+1}$ is a domain, the general form is written as
+\begin{equation}
+    \partial_t u(\bm{x},t) + u(\bm{x},t)\cdot \nabla_{\bm{x}} u(\bm{x},t) = 0
+\end{equation}
+where $ \nabla_{\bm{x}} $ denotes the gradient with respect to the spatial variable $ \bm{x} \in \R^n $. For pragmatic reasons though, we will be focusing on the $n=1$ case. Then (1) simplifies to
+\begin{equation}
+    \partial_t u(x,t) + u(x,t)\partial_xu(x,t) = 0.
+\end{equation}
+There are two key observations to make. The first is that (2) is really a statement about the directional derivative, that is
+\begin{equation}
+    \nabla u(x,t)\cdot (u(x,t), 1) = 0\footnote{Technically we should be normalizing so that this is a unit vector.}
+\end{equation}
+so the derivative of $u$ in the direction of $(u, 1)$ is 0 - in other words, $u$ is constant in this direction. This is a consequence of (2) being first-order. While on the surface it may seem problematic that (2) is quasilinear (and so the direction $(u, 1)$ is varied), this does not complicate the finding of an analytic solution. 
+
+\subsection{The Method of Characteristics}
+
+Given data on some curve $ \Gamma \subset \overline{\Omega} $, we are looking for parametric curves $ (x(t), t) $ which connect points $(x, t) \in \Omega$ to $ \Gamma $. The upshot is that on these \emph{characteristic curves}, the PDE (2) degenerates into an ODE. So
+\begin{equation}
+    \frac{dx}{dt} = u(x(t), t)
+\end{equation}
+Now supposing that $u$ solves (2), let $z(t)$ denote the value of $u$ along a characteristic, i.e. 
+\[
+    z(t) = u(x(t), t)
+\]
+Then
+\begin{align*}
+    \frac{dz}{dt} &= \partial_x u(x(t), t) \frac{dx}{dt}u(x(t), t) + \partial_t u(x(t), t) \\
+    &= \partial_tu(x(t), t) + u(x(t), t) \partial_x u(x(t), t)
+\end{align*}
+
+\begin{comment}
 \[
     \begin{cases}
         u_t + uu_x = 0 \\
         u(x, 0) = g(x)
     \end{cases}
 \]
+\end{comment}
 
 % bibliography
 \nocite{choksi2022}
