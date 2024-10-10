@@ -1,7 +1,9 @@
 \documentclass{myproject}
 
+\graphicspath{{../Figures/}}
+
 % title setup
-\title{Numerical Analysis of Burgers' Equation\footnote{Placeholder title!}}
+\title{\vspace*{-1cm}Numerical Analysis of Burgers' Equation\footnote{Placeholder title!}}
 \date{}
 \author{
     Andre Gormann\\
@@ -21,7 +23,8 @@
 % title creation
 \maketitle
 
-\section{Introduction}
+% document 
+\section{Introduction\protect\footnote{This entire section has been modified from the content in Chapter 2 of \cite{choksi2022}. Specifically, sections 2.2-2.4.}}
 
 \subsection{The Inviscid Burgers' Equation}
 
@@ -41,28 +44,67 @@ so the derivative of $u$ in the direction of $(u, 1)$ is 0 - in other words, $u$
 
 \subsection{The Method of Characteristics}
 
-Given data on some curve $ \Gamma \subset \overline{\Omega} $, we are looking for parametric curves $ (x(t), t) $ which connect points $(x, t) \in \Omega$ to $ \Gamma $. The upshot is that on these \emph{characteristic curves}, the PDE (2) degenerates into an ODE. So
-\begin{equation}
-    \frac{dx}{dt} = u(x(t), t)
-\end{equation}
+Given data on some curve $ \Gamma \subset \overline{\Omega} $, we are looking specific parametric curves $ (x(t), t) $ which connect points $(x, t) \in \Omega$ to $ \Gamma $. We want these curves to be precisely those which are parallel to the vector $(u, 1)$, that is
+\[
+    \frac{dx}{dt} = \frac{u(x(t), t)}{1} = u(x(t), t)
+\]
+
 Now supposing that $u$ solves (2), let $z(t)$ denote the value of $u$ along a characteristic, i.e. 
 \[
     z(t) = u(x(t), t)
 \]
-Then
-\begin{align*}
-    \frac{dz}{dt} &= \partial_x u(x(t), t) \frac{dx}{dt}u(x(t), t) + \partial_t u(x(t), t) \\
-    &= \partial_tu(x(t), t) + u(x(t), t) \partial_x u(x(t), t)
-\end{align*}
-
-\begin{comment}
+Then by the chain rule
 \[
-    \begin{cases}
-        u_t + uu_x = 0 \\
-        u(x, 0) = g(x)
-    \end{cases}
+    \frac{dz}{dt} = \partial_x u(x(t), t) \frac{dx}{dt}u(x(t), t) + \partial_t u(x(t), t)
 \]
-\end{comment}
+but $ x'(t) = u(x,t) $, so
+\[
+    \frac{dz}{dt} = \partial_t u(x(t), t) + u(x,t)\partial_x u(x(t), t)
+\]
+which is precisely 0 by (2). Hence, we have the following coupled system of ODEs
+\begin{equation}
+    \begin{cases}
+        x'(t) = z(t) = u(x(t), t) \\
+        z'(t) = 0
+    \end{cases}
+\end{equation}
+Integrating the second term, we get that
+\[
+    z(t) = z_0
+\]
+for some $ z_0 \in \R $. But $z(t) = u(x(t), t)$, so then $u(x(t), t) = z_0$. This corroborates our findings with (3). Now by integrating the first term, we get
+\begin{equation}
+    x(t) = z_0t + x_0
+\end{equation}
+where $ x_0 \in \R $. Evaluating at $t=0$, we have that $x(0) = x_0$. Now assuming we are prescribed some initial condition $u(x,0) = g(x)$, we have that (5) becomes
+\begin{equation}
+    x(t) = g(x_0)t + x_0
+\end{equation}
+which are exactly those characteristic curves we initially sought.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{intro_f1.png}
+        \caption{A subfigure}
+        \label{fig:sub1}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{intro_f2.png}
+        \caption{A subfigure}
+        \label{fig:sub2}
+    \end{subfigure}
+    \caption{A figure with two subfigures}
+    \label{fig:test}
+\end{figure}
+
+
+
+\section{Numerical Analysis}
+
+\section{Conclusion}
 
 % bibliography
 \nocite{choksi2022}
