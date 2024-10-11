@@ -22,6 +22,7 @@
 
 % title creation
 \maketitle
+\vspace*{-1cm}
 
 % document 
 \section{Introduction\protect\footnote{This entire section has been modified from the content in Chapter 2 of \cite{choksi2022}. Specifically, sections 2.2-2.4.}}
@@ -84,6 +85,8 @@ which are exactly those characteristic curves we initially sought.
 
 \subsection{Interpretation}
 
+For those familiar with the linear transport equation (or advection equation), the physical interpretation of (2) is quite similar; it models the space-time propagation of an initial signal $u(x,0) = g(x)$. The major difference being that the wave-speed is not only not constant - it is proportional to the solution itself (see Figures 1 and 2), and hence can be different along the signal. A consequence of this non-linearity is that the solution to (6) is not always well-defined. Specifically, it can be shown that if $g(x)$ is decreasing on any $E \subset \Gamma$, the solution $u$ will become multivalued at some time $t$ (see Figure 2). This is known as a shock or shockwave. A useful proxy for this behavior is the characteristic curves (Figure 2b); they converge to the point of discontinuity.
+
 \begin{figure}
     \centering
     \begin{subfigure}{.48\textwidth}
@@ -113,7 +116,7 @@ which are exactly those characteristic curves we initially sought.
     \begin{subfigure}{.48\textwidth}
         \centering
         \includegraphics[width=0.75\textwidth]{intro_f2_char.png}
-        \caption{Solution to (2) with the non-decreasing initial condition $u(x,0) = x$.}
+        \caption{Characteristic curves at fixed $x_0 \in [-5, 5]$ with increments of $1$.}
         \label{fig:f2_char}
     \end{subfigure}
     \caption{Solution to (2) with the initial condition $u(x,0) = -x$.}
@@ -126,7 +129,9 @@ which are exactly those characteristic curves we initially sought.
 
 % bibliography
 \nocite{choksi2022}
+\nocite{iserles2009}
 \nocite{kutz2013}
+\nocite{trefethen2001}
 \printbibliography
 
 \end{document}
