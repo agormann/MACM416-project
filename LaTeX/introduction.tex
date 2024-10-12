@@ -124,7 +124,7 @@ For those familiar with the linear transport equation (or advection equation), t
 \end{figure}
 
 \pagebreak
-\section{Numerical Analysis}
+\section{Numerical Analysis\protect\footnote{This section has been taken from \cite{learncfd} and \cite{trefethen2001}.}}
 Each test problem in this subsection is based upon different choices of $g(x)$ in the IVP
 \begin{equation}
     \begin{cases}
@@ -179,6 +179,10 @@ At the formation point of a shock, the solution is discontinuous and therefore n
 It is also worth mentioning that even though these initial conditions and solutions are potentially only piecewise differentiable, there is still a rigorous way to understand them: distributions. For numerical purposes though, it remains to be seen how relevant this change of scenery would be.
 
 \section{Conclusion}
+
+As aforestated, the Burgers' equation in one spatial dimension will be our primary PDE of investigation. That is not to say that there is no possibility of minor variations such as adding a source/sink term or modifying coefficients (or even major ones such as adding a diffusion term). Since these changes fundamentally alter the solution and interpretation though, they are not a focus. 
+
+We have derived an implicit analytic solution to (2) in the form of (6). Given some fixed $u(x,0) = g(x)$, we can then explicitly solve for the solution $u(x,t)$. If $g(x)$ is decreasing on any interval, then a shock (and hence a discontinuity) is guaranteed. The speed of the shock is characterized by the Rankine-Hugoniot condition. Our first major investigation is studying these phenomena numerically.
 
 % bibliography
 \nocite{choksi2022}
