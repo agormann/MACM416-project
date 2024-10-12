@@ -124,6 +124,58 @@ For those familiar with the linear transport equation (or advection equation), t
 \end{figure}
 
 \section{Numerical Analysis}
+Each test problem in this subsection is based upon different choices of $g(x)$ in the IVP
+	\begin{equation}
+	    \begin{cases}
+	      	\partial_t{u} + u\partial_x{u} = 0, a < x < b, t \geq 0 \\
+			u(x, 0) = g(x)
+	    \end{cases}
+	\end{equation}
+For each test case, we will primarily be using periodic boundary conditions; as the Burgers' equation deals with wave propagation. However, out of curiosity, we will also expiriment with Dirichlet, Neumann, and Robin boundary conditions as we see fit.
+
+\subsection{Test Problems}
+\begin{itemize}
+	\item \textbf{Riemann Problem}
+	\\The Riemann Problem studies the formation of shocks. The initial contion is as follows
+
+	\begin{equation}
+		u(x,0) = 
+	    \begin{cases}
+	      	u_L & \text{if } x < 0 \\
+			u_R & \text{if } x \geq 0
+	    \end{cases}
+	\end{equation}
+	\\where $u_L > u_R$. We will first test different numerical methods for $u_L = 1, u_R = 0$ and then move to problems where $u_L$ is a polynomial and $u_R = 0$.
+	\\\\The true solution is
+	\begin{equation}
+		u(x,t) = 
+	    \begin{cases}
+	      	u_L & \text{if } x < st \\
+			u_R & \text{if } x \geq st
+	    \end{cases}
+	\end{equation}
+	\\where $s = \frac{u_L + u_R}{2}$ is the speed of the shock. This is known as the Rankine-Hugoniot condition.
+	
+	\item \textbf{Rarefraction Wave}
+	\\If we take the Riemann Problem but instead have $u_L < u_R$, a shock will not form. In this case we get what is called a rarefraction wave.
+	\\PERHAPS INSERT A FIGURE OF A RAREFRACTION WAVE IDK HOW THE OTHER FIGS WERE DONE
+	\\\\The true solution is
+	\begin{equation}
+		u(x,t) = 
+	    \begin{cases}
+	      	u_L & \text{if } x \leq {u_L}t \\
+			\frac{x}{t} & \text{if } {u_L}t < x < {u_R}t \\
+			u_R & \text{if } x \geq {u_R}t
+	    \end{cases}
+	\end{equation}
+
+
+\end{itemize}
+
+
+\subsection{Features of Solutions}
+At the formation point of a shock, the solution is discontinuous and therefore not differentiable. This leads to a region of poor regularity after the shock. From this, it can be concluded that a numerical solution may blow up due to this region. Something to consider is that for any particular value of $t$, $u(x, t)$ is only discontinous at the point where the shock occurs. So, $u(x,t)$ will be differentiable to the left and right of the shock, and numerical methods can make use of these derivatives.
+\\\\If we have a rarefraction wave, our solution will be smooth. In this case, it can be presumed that numerical solutions will not blow up.
 
 \section{Conclusion}
 
