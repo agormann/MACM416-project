@@ -174,21 +174,21 @@ For each test case, we will primarily be using periodic boundary conditions; as 
 
 	\item \textbf{Sinusoidal Initial Condition}
 
-	We want to investigate our PDE with the initial condition $u(x, 0) = sin(x)$. This should cause a shock to form since $sin(x)$ is sometimes decreasing. We expect similar results for $u(x, 0) = cos(x)$, so we will likely not do much testing with this initial condition. The true solution is
+	We want to investigate our PDE with the initial condition $u(x, 0) = \sin(x)$. This should cause a shock to form since $\sin(x)$ is sometimes decreasing. We expect similar results for $u(x, 0) = \cos(x)$, so we will likely not do much testing with this initial condition. The true solution is
 	\begin{equation}
-		x(t) = sin(x_0){t} + x_0
+		x(t) = \sin(x_0){t} + x_0
 	\end{equation}
 
 	\item \textbf{Exponential Initial Condition}
 
 	We want to investigate our PDE with the initial conditions $u(x, 0) = e^x$ and $u(x, 0) = e^{-x}$. We expect no shock for the former since $e^x$ is always increasing. For the latter, we expect a shock since $e^{-x}$ is always decreasing. The true solutions, respectively, are 
 	\begin{equation}
-		x(t) = e^{x_0}{t} + x_0 \text{ and } x(t) = e^{-x_0}{t} + x_0
+		x(t) = e^{x_0}{t} + x_0 \quad \text{and} \quad x(t) = e^{-x_0}{t} + x_0
 	\end{equation}
 
 	\item \textbf{Polynomial Initial Condition}
 
-	We want to investigate our PDE with different polynomial initial conditions. We will test polynomials that are constant, linear, quadratic, etc. until we decide to stop for some reason. In each case, the intial condition will be
+	We want to investigate our PDE with different polynomial initial conditions. We will test polynomials that are constant, linear, quadratic, etc. until we decide to stop for some reason. In each case, the initial condition will be
 	\begin{equation}
 		u(x, 0) = g(x)
 	\end{equation}
