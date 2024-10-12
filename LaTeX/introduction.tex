@@ -132,7 +132,7 @@ Each test problem in this subsection is based upon different choices of $g(x)$ i
         u(x, 0) = g(x)
     \end{cases}
 \end{equation}
-For each test case, we will primarily be using periodic boundary conditions; as the Burgers' equation deals with wave propagation. However, out of curiosity, we will also experiment with Dirichlet, Neumann, and Robin boundary conditions as we see fit.
+For each test case, we will primarily be using periodic boundary conditions; as the Burgers' equation deals with wave propagation. However, out of curiosity, we will also experiment with Dirichlet, Neumann, and Robin boundary conditions as we see fit. The solutions in for the first two test problems are given explicitly, while the remaining are given explicitly from $(6)$.
 
 \subsection{Test Problems}
 \begin{itemize}
@@ -160,7 +160,7 @@ For each test case, we will primarily be using periodic boundary conditions; as 
 	
 	\item \textbf{Rarefaction Wave}
 	
-    If we take the Riemann Problem but instead have $u_L < u_R$, a shock will not form. In this case we get what is called a rarefaction wave.
+    If we take the Riemann Problem but instead have $u_L < u_R$, a shock will not form. In this case we get what is called a rarefaction wave. From what we understand, the characteristic lines of the true solution become rarified as $t$ increases, meaning the distance between them increases.
 	% PERHAPS INSERT A FIGURE OF A RAREFRACTION WAVE IDK HOW THE OTHER FIGS WERE DONE
 	The true solution is
 	\begin{equation}
@@ -171,6 +171,44 @@ For each test case, we will primarily be using periodic boundary conditions; as 
 			u_R & \text{if } x \geq {u_R}t
 	    \end{cases}
 	\end{equation}
+
+	\item \textbf{Sinusoidal Initial Condition}
+
+	We want to investigate our PDE with the initial condition $u(x, 0) = sin(x)$. This should cause a shock to form since $sin(x)$ is sometimes decreasing. We expect similar results for $u(x, 0) = cos(x)$, so we will likely not do much testing with this initial condition. The true solution is
+	\begin{equation}
+		x(t) = sin(x_0){t} + x_0
+	\end{equation}
+
+	\item \textbf{Exponential Initial Condition}
+
+	We want to investigate our PDE with the initial conditions $u(x, 0) = e^x$ and $u(x, 0) = e^{-x}$. We expect no shock for the former since $e^x$ is always increasing. For the latter, we expect a shock since $e^{-x}$ is always decreasing. The true solutions, respectively, are 
+	\begin{equation}
+		x(t) = e^{x_0}{t} + x_0 \text{ and } x(t) = e^{-x_0}{t} + x_0
+	\end{equation}
+
+	\item \textbf{Polynomial Initial Condition}
+
+	We want to investigate our PDE with different polynomial initial conditions. We will test polynomials that are constant, linear, quadratic, etc. until we decide to stop for some reason. In each case, the intial condition will be
+	\begin{equation}
+		u(x, 0) = g(x)
+	\end{equation}
+	where $g(x)$ is some polynomial. The true solution is
+	\begin{equation}
+		x(t) = g(x_0){t} + x_0
+	\end{equation}
+
+	\item \textbf{Reciprocal of a Polynomial Initial Condition}
+
+	We want to investigate out PDE with initial conditions of the form
+	\begin{equation}
+		u(x, 0) = g(x) = \frac{1}{f(x)}
+	\end{equation}
+	where $f(x)$ is some polynomial of degree at least 1. The true solution is
+	\begin{equation}
+		x(t) = \frac{t}{f(x_0)} + x_0
+	\end{equation}
+	These initial conditions should lead to shocks as $g(x)$ will always have a region where it is decreasing.
+
 \end{itemize}
 
 \subsection{Features of Solutions}
