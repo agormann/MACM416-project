@@ -156,7 +156,7 @@ For each test case, we will primarily be using periodic boundary conditions; as 
 			u_R & \text{if } x \geq st
 	    \end{cases}
 	\end{equation}
-	where \[s = \frac{u_L + u_R}{2}\] is the speed of the shock. This is known as the Rankine–Hugoniot condition.
+	where \[s = \frac{u_L + u_R}{2}\] is the speed of the shock. This is known as the Rankine-Hugoniot condition.
 	
 	\item \textbf{Rarefaction Wave}
 	
@@ -180,7 +180,7 @@ It is also worth mentioning that even though these initial conditions and soluti
 
 \section{Conclusion}
 
-As aforestated, the Burgers' equation in one spatial dimension will be our primary PDE of investigation. That is not to say that there is no possibility of minor variations such as adding a source/sink term or modifying coefficients (or even major ones such as adding a diffusion term). Since these changes fundamentally alter the solution and interpretation though, they are not a focus. 
+As aforestated, the Burgers' equation in one spatial dimension will be our primary PDE of investigation. That is not to say that there is no possibility of minor variations such as adding a source/sink term or modifying coefficients (or even major ones such as adding a diffusion term). Since these changes fundamentally alter the solution and interpretation though, they are not the initial focus. 
 
 We have derived an implicit analytic solution to (2) in the form of (6). Given some fixed $u(x,0) = g(x)$, we can then explicitly solve for the solution $u(x,t)$. If $g(x)$ is decreasing on any interval, then a shock (and hence a discontinuity) is guaranteed. The speed of the shock is characterized by the Rankine-Hugoniot condition. Our first major investigation is studying these phenomena numerically.
 
