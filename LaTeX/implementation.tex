@@ -27,6 +27,13 @@
 % document 
 
 \section{Introduction}
+We have chosen to use the Lax-Friedrichs scheme to approximate solutions of the Inviscid Burgers equation. The scheme is defined by the update rule
+
+\[
+    U_j^{n+1} = \frac{1}{2}\left( U_{j-1}^{n} + U_{j+1}^{n} \right) - \frac{\Delta t}{2\Delta x}\left( f(U_{j+1}^{n}) - f(U_{j-1}^{n}) \right)
+\]
+
+The scheme combines upadtes in the spacial domain with time-stepping. Our reasoning for choosing the Lax-Friedrichs scheme is X Y Z. We will be using periodic boundary conditions because UMMMMMMMMMM WAVES.
 
 \section{Body}
 
@@ -66,7 +73,7 @@
     \frac{U_j^{n+1} - U_j^n}{\Delta t} + \frac{F_{j+1/2}^n - F_{j-1/2}^n}{\Delta x} = 0
 \]
 
-\section{Matrix Form}
+\section{Matrix Form of the Lax-Friedrichs Scheme}
 The Lax-Friedrichs scheme
 \[
     U_j^{n+1} = \frac{1}{2}\left( U_{j-1}^{n} + U_{j+1}^{n} \right) - \frac{\Delta t}{2\Delta x}\left( f(U_{j+1}^{n}) - f(U_{j-1}^{n}) \right)
@@ -158,6 +165,8 @@ E = \frac{1}{2}
 \]
 
 In either case, we can construct the matrices in MATLAB by using the \textit{diag()} command on vectors containing the values of the non-zero diagonals, then filling in the values in the bottom left and top right corners as necessary.
+
+We will be using the matrices defined in this section to implement our periodic boundary conditions. The entries in the bottom left and top right corners of the matrices handle the cases where a value from beyond the periodic boundaries is needed.
 
 \section{Conclusion}
 
