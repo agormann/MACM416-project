@@ -27,51 +27,70 @@
 % document 
 
 \section{Introduction}
+
+The problem we will be considering is the inviscid Burgers' equation with periodic boundary conditions
+\begin{equation}
+    \begin{cases}
+        & u_t + uu_x = 0 \qquad x \in [-L, L] \qquad t \geq 0 \\
+        & u(x,0) = u_0(x) \\
+        & u(-L,t) = u(L,t)
+    \end{cases}
+\end{equation}
+
+Throughout the ensuing discussion, it will be far more useful if we rewrite the inviscid Burgers' equation in its conservation form
+\begin{equation}
+    u_t + f(u)_x = 0 \qquad f(u) = \frac{1}{2}u^2
+\end{equation}
+
 We have chosen to use the Lax-Friedrichs scheme to approximate solutions of the Inviscid Burgers equation. The scheme is defined by the update rule
 
 \[
     U_j^{n+1} = \frac{1}{2}\left( U_{j-1}^{n} + U_{j+1}^{n} \right) - \frac{\Delta t}{2\Delta x}\left( f(U_{j+1}^{n}) - f(U_{j-1}^{n}) \right)
 \]
+where $U_{j}^{n} \in \R^N$ denotes the approximation to $u(x_j,t_n)$ at time $t_n$
 
 The scheme combines upadtes in the spacial domain with time-stepping. Our reasoning for choosing the Lax-Friedrichs scheme is X Y Z. We will be using periodic boundary conditions because UMMMMMMMMMM WAVES.
 
+\section{Theory}
+
+We begin by discretizing the interval $[-L,L]$ by defining a mesh width $\Delta x = 2L/N$ so that 
+\[
+    x_j = -L + j\Delta x \qquad x_{j+1/2} = x_j + \frac{\Delta x}{2}
+\]
+We will also denote the time step by $\Delta t_n$ so that
+\[
+    t_n = n\Delta t_n
+\]
+The exact formula for $\Delta t_n$ will remain undefined for now as it must be a variable time-step.
+
+We denote the \emph{pointwise values} of the true solution at the mesh point $(x_j, t_n)$ by 
+\[
+    u_j^n = u(x_j,t_n)
+\]
+and the \emph{cell average} of the true solution 
+\[
+    \bar{u}_j^n = \frac{1}{\Delta x} \int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_n) dx
+\]
+
+\[
+    \int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_{n+1}) dx = \int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_{n}) dx - \left[ \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2},t)) dx - \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2},t)) dx \right]
+\]
+
+We say that a method is in \emph{conservation form} if 
+\[
+    U_j^{n+1} = U_j^n - \frac{\Delta t}{\Delta x} \left[ \mathcal{F}(U_{j}^{n}, U_{j+1}^{n}) - \mathcal{F}(U_{j-1}^{n}, U_{j}^{n}) \right]
+\]
+
+\[
+    \bar{u}_j^{n+1} = \bar{u}_j^n - \frac{1}{\Delta x}\left[ \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2},t)) dx - \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2},t)) dx \right]
+\]
+
+So the numerical flux function $\mathcal{F}$ plays the role of an average flux through $x_{j\pm1/2}$ over the time interval $[t_n, t_{n+1}]$
+\[
+    \mathcal{F}(U_j^n, U_{j+1}^n) \sim \frac{1}{\Delta x} \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2}, t)) dt \qquad \mathcal{F}(U_{j-1}^n, U_{j}^n) \sim \frac{1}{\Delta x} \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2}, t)) dt
+\]
+
 \section{Body}
-
-\[
-    U_j^{n+1} = U_j^n - \frac{\Delta t}{\Delta x} \left( \mathcal{F}(U_{j}^{n}, U_{j+1}^{n}) - \mathcal{F}(U_{j-1}^{n}, U_{j}^{n}) \right)
-\]
-
-\[
-    U_j^{n+1} = \frac{1}{2}\left( U_{j-1}^{n} + U_{j+1}^{n} \right) - \frac{\Delta t}{2\Delta x}\left( f(U_{j+1}^{n}) - f(U_{j-1}^{n}) \right)
-\]
-
-\[
-    \mathcal{F}(U_j^n, U_{j+1}^n) := \frac{\Delta x}{2 \Delta t}(U_j^n - U_{j+1}^n) + \frac{1}{2}\left( f(U_j^n) + f(U_{j+1}^n) \right)
-\]
-
-\[
-    U_j^n \sim \bar{u}_j^n \equiv \frac{1}{\Delta x} \int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_n) dx
-\]
-
-\[
-    \mathcal{F}(U_j^n, U_{j+1}^n) \sim \frac{1}{\Delta x} \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2}, t)) dt
-\]
-
-\[
-    \mathcal{F}(\bar{u}, \bar{u}) = f(\bar{u})
-\]
-
-\[
-    u_t + f(u)_x = 0
-\]
-
-\[
-    F_{j-1/2}^n = \mathcal{F}(U_{j-1}^n, U_j^n) \qquad F_{j+1/2}^n = \mathcal{F}(U_{j}^n, U_{j+1}^n)
-\]
-
-\[
-    \frac{U_j^{n+1} - U_j^n}{\Delta t} + \frac{F_{j+1/2}^n - F_{j-1/2}^n}{\Delta x} = 0
-\]
 
 \section{Matrix Form of the Lax-Friedrichs Scheme}
 The Lax-Friedrichs scheme
