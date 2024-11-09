@@ -31,7 +31,7 @@
 \section{Body}
 
 \[
-    U_j^{n+1} = U_j^n - \frac{\Delta t}{\Delta x} \left( \mathcal{F}(U_{j}^{n}, U_{j+1}^{n}) - \mathcal{F}(U_{j-1}^{n}, U_{j+1}^{n}) \right)
+    U_j^{n+1} = U_j^n - \frac{\Delta t}{\Delta x} \left( \mathcal{F}(U_{j}^{n}, U_{j+1}^{n}) - \mathcal{F}(U_{j-1}^{n}, U_{j}^{n}) \right)
 \]
 
 \[
@@ -39,7 +39,7 @@
 \]
 
 \[
-    \mathcal{F}(U_j^n, U_{j+1}^n) := \frac{\Delta t}{2\Delta x}(U_j^n - U_{j+1}^n) + \frac{1}{2}\left( f(U_j^n) + f(U_{j+1}^n) \right)
+    \mathcal{F}(U_j^n, U_{j+1}^n) := \frac{\Delta x}{2 \Delta t}(U_j^n - U_{j+1}^n) + \frac{1}{2}\left( f(U_j^n) + f(U_{j+1}^n) \right)
 \]
 
 \[
