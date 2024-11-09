@@ -28,7 +28,7 @@
 
 \section{Introduction}
 
-The problem we will be considering is the inviscid Burgers' equation with periodic boundary conditions
+The problem we will be considering is the Inviscid Burgers' equation with periodic boundary conditions
 \begin{equation}
     \begin{cases}
         & u_t + uu_x = 0 \qquad x \in [-L, L] \qquad t \geq 0 \\
@@ -49,7 +49,7 @@ We have chosen to use the Lax-Friedrichs scheme to approximate solutions of the 
 \]
 where $U_{j}^{n} \in \R^N$ denotes the approximation to $u(x_j,t_n)$ at time $t_n$
 
-The scheme combines upadtes in the spacial domain with time-stepping. Our reasoning for choosing the Lax-Friedrichs scheme is X Y Z. We will be using periodic boundary conditions because UMMMMMMMMMM WAVES.
+The scheme combines updates in the spacial domain with time-stepping. Our reasoning for choosing the Lax-Friedrichs scheme is found in the second term of the update rule. This term applies a sort of dampening effect at each time-step based on the flow between grid cells. We hope that this will work to improve accuracy around shocks when they form in the solution. Another advantage of the Lax-Friedrich's scheme is that we can guarantee stability through the choices of ${\Delta t}$ and ${\Delta x}$, so long as we can bound $|u|$. This will be elaborated upon later in the document. We will be using periodic boundary conditions because the Inviscid Burgers' equation deals with wave propagation.
 
 \section{Theory}
 
@@ -89,8 +89,6 @@ So the numerical flux function $\mathcal{F}$ plays the role of an average flux t
 \[
     \mathcal{F}(U_j^n, U_{j+1}^n) \sim \frac{1}{\Delta x} \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2}, t)) dt \qquad \mathcal{F}(U_{j-1}^n, U_{j}^n) \sim \frac{1}{\Delta x} \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2}, t)) dt
 \]
-
-\section{Body}
 
 \section{Matrix Form of the Lax-Friedrichs Scheme}
 The Lax-Friedrichs scheme
