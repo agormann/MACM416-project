@@ -30,6 +30,43 @@
 
 \section{Body}
 
+\[
+    U_j^{n+1} = U_j^n - \frac{\Delta t}{\Delta x} \left( \mathcal{F}(U_{j}^{n}, U_{j+1}^{n}) - \mathcal{F}(U_{j-1}^{n}, U_{j+1}^{n}) \right)
+\]
+
+\[
+    U_j^{n+1} = \frac{1}{2}\left( U_{j-1}^{n} + U_{j+1}^{n} \right) - \frac{\Delta t}{2\Delta x}\left( f(U_{j+1}^{n}) - f(U_{j-1}^{n}) \right)
+\]
+
+\[
+    \mathcal{F}(U_j^n, U_{j+1}^n) := \frac{\Delta t}{2\Delta x}(U_j^n - U_{j+1}^n) + \frac{1}{2}\left( f(U_j^n) + f(U_{j+1}^n) \right)
+\]
+
+\[
+    U_j^n \sim \bar{u}_j^n \equiv \frac{1}{\Delta x} \int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_n) dx
+\]
+
+\[
+    \mathcal{F}(U_j^n, U_{j+1}^n) \sim \frac{1}{\Delta x} \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2}, t)) dt
+\]
+
+\[
+    \mathcal{F}(\bar{u}, \bar{u}) = f(\bar{u})
+\]
+
+\[
+    u_t + f(u)_x = 0
+\]
+
+\[
+    F_{j-1/2}^n = \mathcal{F}(U_{j-1}^n, U_j^n) \qquad F_{j+1/2}^n = \mathcal{F}(U_{j}^n, U_{j+1}^n)
+\]
+
+\[
+    \frac{U_j^{n+1} - U_j^n}{\Delta t} + \frac{F_{j+1/2}^n - F_{j-1/2}^n}{\Delta x} = 0
+\]
+
+
 \section{Conclusion}
 
 % bibliography
@@ -40,6 +77,7 @@
 % \nocite{learncfd}
 % \nocite{evans2010}
 \nocite{leveque1992}
+\nocite{leveque2002}
 \printbibliography
 
 \end{document}
