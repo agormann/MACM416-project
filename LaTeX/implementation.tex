@@ -164,7 +164,7 @@ E = \frac{1}{2}
 \end{bmatrix}
 \]
 
-In either case, we can construct the matrices in MATLAB by using the \textit{diag()} command on vectors containing the values of the non-zero diagonals, then filling in the values in the bottom left and top right corners as necessary.
+In either case, we can construct the matrices in MATLAB by using the \textit{diag()} command on vectors containing the values of the non-zero diagonals, then filling in the values in the bottom left and top right corners as necessary, and lastly multiplying by the respective coefficient.
 
 We will be using the matrices defined in this section to implement our periodic boundary conditions. The entries in the bottom left and top right corners of the matrices handle the cases where a value from beyond the periodic boundaries is needed.
 
