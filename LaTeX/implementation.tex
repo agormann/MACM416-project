@@ -66,6 +66,98 @@
     \frac{U_j^{n+1} - U_j^n}{\Delta t} + \frac{F_{j+1/2}^n - F_{j-1/2}^n}{\Delta x} = 0
 \]
 
+\section{Matrix Form}
+The Lax-Friedrichs scheme
+\[
+    U_j^{n+1} = \frac{1}{2}\left( U_{j-1}^{n} + U_{j+1}^{n} \right) - \frac{\Delta t}{2\Delta x}\left( f(U_{j+1}^{n}) - f(U_{j-1}^{n}) \right)
+\]
+
+can be converted into a matrix form
+
+\[
+\vec{U}^{n+1} = A\vec{U}^{n} - B\vec{f}(\vec{U}^{n})
+\]
+
+where
+
+\[
+A = \frac{1}{2}
+\begin{bmatrix}
+0 & 1 & 0 & \dots & 0 & 1 \\
+1 & 0 & 1 & \dots & 0 & 0 \\
+0 & 1 & 0 & \dots & 0 & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & 0 & \dots & 0 & 1 \\
+1 & 0 & 0 & \dots & 1 & 0
+\end{bmatrix},
+\quad
+B = \frac{\Delta t}{2 \Delta x}
+\begin{bmatrix}
+0 & 1 & 0 & \dots & 0 & -1 \\
+-1 & 0 & 1 & \dots & 0 & 0 \\
+0 & -1 & 0 & \dots & 0 & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & 0 & \dots & 0 & 1 \\
+1 & 0 & 0 & \dots & -1 & 0
+\end{bmatrix}
+\]
+
+If we instead use the conservation form of the Lax-Friedrichs scheme
+
+\[
+    U_j^{n+1} = U_j^n - \frac{\Delta t}{\Delta x} \left( \mathcal{F}(U_{j}^{n}, U_{j+1}^{n}) - \mathcal{F}(U_{j-1}^{n}, U_{j}^{n}) \right)
+\]
+
+\[
+    \mathcal{F}(U_j^n, U_{j+1}^n) := \frac{\Delta x}{2 \Delta t}(U_j^n - U_{j+1}^n) + \frac{1}{2}\left( f(U_j^n) + f(U_{j+1}^n) \right)
+\]
+
+we get the following matrix form
+
+\[
+\vec{U}^{n+1} = \vec{U}^{n} - C\vec{\mathcal{F}}(\vec{U}^{n})
+\]
+
+\[
+\vec{\mathcal{F}}(\vec{U}^{n}) = D\vec{U}^{n} + E\vec{f}(\vec{U}^{n})
+\]
+
+where
+
+\[
+C = \frac{\Delta x}{\Delta t}
+\begin{bmatrix}
+-1 & 1 & 0 & \dots & 0 & 0 \\
+0 & -1 & 1 & \dots & 0 & 0 \\
+0 & 0 & -1 & \dots & 0 & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & 0 & \dots & -1 & 1 \\
+1 & 0 & 0 & \dots & 0 & -1
+\end{bmatrix},
+\]
+\[
+D = \frac{\Delta x}{2 \Delta t}
+\begin{bmatrix}
+-1 & 0 & 0 & \dots & 0 & 1 \\
+1 & -1 & 0 & \dots & 0 & 0 \\
+0 & 1 & -1 & \dots & 0 & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & 0 & \dots & -1 & 0 \\
+0 & 0 & 0 & \dots & 1 & -1
+\end{bmatrix},
+\quad
+E = \frac{1}{2}
+\begin{bmatrix}
+1 & 0 & 0 & \dots & 0 & 1 \\
+1 & 1 & 0 & \dots & 0 & 0 \\
+0 & 1 & 1 & \dots & 0 & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & 0 & \dots & 1 & 0 \\
+0 & 0 & 0 & \dots & 1 & 1
+\end{bmatrix}
+\]
+
+In either case, we can construct the matrices in MATLAB by using the \textit{diag()} command on vectors containing the values of the non-zero diagonals, then filling in the values in the bottom left and top right corners as necessary.
 
 \section{Conclusion}
 
