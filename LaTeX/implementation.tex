@@ -53,7 +53,7 @@ The scheme combines updates in the spacial domain with time-stepping. Our reason
 \[
     u_t + f(u)_x = \frac{(\Delta x)^2}{2\Delta t}u_{xx},
 \]
-and so are introducing a form of `numerical viscosity.' The reason why this is not problematic is that as the grid is refined, the coefficient in front of $u_xx$ vanishes. We hope that this will work to improve accuracy around shocks when they form in the solution. Another advantage of the Lax-Friedrichs scheme is that we can guarantee stability through the choices of ${\Delta t}$ and ${\Delta x}$, so long as we can bound $|u|$. This will be elaborated upon later in the document. We will be testing grid sizes of decreasing powers of $10$, starting with $10^{-1}$. Our choice of ${\Delta t}$ such that stability is guaranteed will therefore depend on the grid size. We will be using periodic boundary conditions because the Inviscid Burgers' equation deals with wave propagation.
+and so are introducing a form of `numerical viscosity.' The reason why this is not problematic is that as the grid is refined, the coefficient in front of $u_{xx}$ vanishes. We hope that this will work to improve accuracy around shocks when they form in the solution. Another advantage of the Lax-Friedrichs scheme is that we can guarantee stability through the choices of ${\Delta t}$ and ${\Delta x}$, so long as we can bound $|u|$. This will be elaborated upon later in the document. We will be testing grid sizes of decreasing powers of $10$, starting with $10^{-1}$. Our choice of ${\Delta t}$ such that stability is guaranteed will therefore depend on the grid size. We will be using periodic boundary conditions because the Inviscid Burgers' equation deals with wave propagation.
 
 \section{Theory}
 \subsection{Conservation Laws}
