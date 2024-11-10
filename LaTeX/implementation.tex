@@ -137,7 +137,21 @@ The condition for stability is dependent upon the method employed. Since we will
     \max_{j \in [1, N]} |U_j^n| \frac{\Delta t}{\Delta x} \leq 1
 \end{equation}
 
-We mentioned prior that the time-step $\Delta t$ must be variable. The reason for this will now be illustrated.
+We mentioned prior that the time-step $\Delta t$ must be variable. The reason for this will now be illustrated (see Figure 2 below). The entire reason for the cell-average interpretation is so that we can chop the interval into a collection of Riemann problems. If we have shockwaves (or rarefactions) interacting with one another, the problem is no longer a Riemann problem and the method breaks down. Hence the time-step must be catered to the problem.
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{steps_for_shocks_crossing_cells.png}
+        \caption{Cell averages of some toy function. Notice that by the Rankine–Hugoniot conditions, we expect shockwaves to propagate at the discontinuities.}
+    \end{subfigure}\hfill
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{shockwaves_crossing_multiple_cells.png}
+        \caption{Characteristic curves associated with the cell averages. Notice that the shockwave from the first discontinuity is carried into the third cell because the time-step $\Delta t$ is too large.}
+    \end{subfigure}
+    \caption{}
+\end{figure}
 
 As an aside: the unfortunate reality\footnote{At least, this is our current comprehension. The theory is somewhat overwhelming and hard to understand.} is that the aforementioned conditions are insufficient for guaranteeing convergence. We also require that the method satisfies the Lax-Wendroff Theorem. We will not state it here because we do not fully comprehend it, but it can be found on page 130 of \cite{leveque1992} and page 240 of \cite{leveque2002}. Further, we require that the method satisfies a certain \emph{entropy condition}. \cite{iserles2009} on page 416 states it simply as the inequality
 \[
