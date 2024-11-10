@@ -130,14 +130,14 @@ where $F_{j\pm1/2}^n \sim \mathcal{F}$ as before. Hence these methods can be und
 \subsection{Convergence}
 To ensure a numerical scheme converges to the correct solution, we impose a few restrictions on the construction of the numerical flux function $\mathcal{F}$. First, we require that it is \emph{Lipschitz continuous}. That is, when $u(x_j,t_n) \approx \bar{u}_j^n$ about some mesh point $(x_j,t_n)$, that we can find $M \in \R$ so that
 \begin{equation}
-    \left| \mathcal{F}(U_{j-1}^n, U_j^n) - f(\bar{u_j^n}) \right| \leq M \max\left( \left| U_j^n - \bar{u^n_j} \right|, \left| U_{j-1}^n - \bar{u_j^n} \right| \right).
+    \left| \mathcal{F}(U_{j-1}^n, U_j^n) - f() \right| \leq M \max\left( \left| U_j^n - \bar{u}_j^n \right|, \left| U_{j-1}^n - \bar{u}_j^n \right| \right).
 \end{equation}
 The condition for stability is dependent upon the method employed. Since we will be using Lax-Friedrichs, we require that as the step-sizes $\Delta x$ and $\Delta t$ are refined, that the following inequality is maintained
 \begin{equation}
     \max_{j \in [1, N]} |U_j^n| \frac{\Delta t}{\Delta x} \leq 1
 \end{equation}
 
-We mentioned prior that the time-step $\Delta t$ must be variable. The reason for this will now be illustrated (see Figure 2 below). The entire reason for the cell-average interpretation is so that we can chop the interval into a collection of Riemann problems. If we have shockwaves (or rarefactions) interacting with one another, the problem is no longer a Riemann problem and the method breaks down. Hence the time-step must be catered to the problem.
+We mentioned prior that the time-step $\Delta t$ must be variable. The reason for this will now be illustrated (see Figure 2 below). The entire reason for the cell-average interpretation is so that we can chop the interval into a collection of Riemann problems. If we have shockwaves (or rarefactions) interacting with one another, the problem is no longer a Riemann problem and the method breaks down. Moreover, as we can see by the the CFL condition (6), stability is directly dependent upon the values that $U^n$ takes at a particular time $t_n$; it is coupled to time. Hence the time-step must be catered to the problem.
 \begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
