@@ -100,11 +100,11 @@ To this end, we say that a numerical method is in \emph{conservation form} if
 \[
     U_j^{n+1} = U_j^n - \frac{\Delta t}{\Delta x} \left[ \mathcal{F}(U_{j}^{n}, U_{j+1}^{n}) - \mathcal{F}(U_{j-1}^{n}, U_{j}^{n}) \right].
 \]
-Note that while this derivation comes about through the introduction of control volumes, and hence falls under the umbrella of \emph{finite volume methods}, we can also understand it through the lens of finite differences. Specifically, through the relation
+Note that while this derivation comes about through the introduction of control volumes, and hence falls under the umbrella of \emph{finite volume methods}, we can also understand it through the lens of finite differences. Specifically, from (2) we get the relation
 \[
     \frac{U_j^{n+1} - U_j^n}{\Delta t} + \frac{F_{j+1/2}^n - F_{j-1/2}^n}{\Delta x} = 0
 \]
-where $F_{j\pm1/2}^n \sim \mathcal{F}$ as before.
+where $F_{j\pm1/2}^n \sim \mathcal{F}$ as before. Hence these methods can be understood to be first-order accurate in time and `somewhat' second-order accurate in space. We say `somewhat' because the reality is complicated.
 
 \section{Matrix Form of the Lax-Friedrichs Scheme}
 The Lax-Friedrichs scheme
