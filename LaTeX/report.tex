@@ -51,29 +51,98 @@ where
 \begin{equation}
     f(u) = \frac{1}{2}u^2
 \end{equation}
-is known as the flux function. This is known as the conservation form of the inviscid Burgers' equation. If we integrate \eqref{burgers_conservative} over $[a,b]$, where $[a,b] \subset \Omega$, then we get
+is known as the flux function\footnote{Because the inviscid Burgers' equation can be put into this form, we are able to leverage a whole host of theory concerning advection conservation laws.}. This is known as the conservation form of the inviscid Burgers' equation. If we integrate \eqref{burgers_conservative} over $[a,b]$, where $[a,b] \subset \Omega$, then we get
 \begin{equation}\label{burgers_integral}
     \frac{d}{dt}\int_{a}^{b} u(x,t) dx = f(u(a,t)) - f(u(b,t))
 \end{equation}
-where we have exchanged differentiation and integration. The form \eqref{burgers_integral} is known as the integral form of \eqref{burgers_conservative}, and it is where the `conservative' notion comes from.
+where we have exchanged differentiation and integration. The form \eqref{burgers_integral} is known as the integral form of \eqref{burgers_conservative}, and it is where the `conservative' notion comes from\footnote{A more explicit derivation of \eqref{burgers_integral} can be found in Section 2.1 of \cite{leveque2002}.}.
 
-Importantly, this integral form has no problems admitting profiles $u$ with spatial discontinuities (we assume it is not also discontinuous in time). It is this formulation (not \eqref{burgers_long}) that we will be studying and developing our numerical schemes for. 
+Importantly, this integral form has no problems admitting profiles $u$ with spatial discontinuities (we assume it is not also discontinuous in time). It is this formulation (along with \eqref{burgers_conservative}) that we will be studying and developing our numerical schemes for, not the quasilinear form. 
 
 \section{Theory}
 
-yahoo theory
+We will begin by introducing some notation that will be used throughout this section. Supposing that $\Omega = [a,b]\times\R^+$, we discretize the interval $[a,b]$ into a vector of $N$ points $x_j$ by defining a fixed mesh-width\footnote{It is possible to use a variable mesh-width, but we have elected not to.} $\Delta x = (b-a)/N$ so that
+\begin{equation}
+    x_j = a + j\Delta x.
+\end{equation}
+Note that we are assuming periodic boundary conditions so that $x_0 = x_{N}$, and so we have exactly $N$ points. For reasons that will soon become clear, we are also interested in the half-steps $x_{j\pm1/2}$ defined by
+\[
+    x_{j\pm1/2} = x_j \pm \frac{\Delta x}{2}.
+\]
+Time will simply be denoted by $t_n$, with no explicit formula. This is because for stability purposes (see Section 2.4), we require a variable time-step.
+
+We denote the \emph{pointwise values} of the true solution $u$ which solves \eqref{burgers_conservative} exactly at the mesh point $(x_j, t_n)$ by 
+\[
+    u_j^n = u(x_j,t_n).
+\]
+The \emph{cell averages} about the mesh point $(x_j, t_n)$ are then defined by
+\begin{equation}\label{cell_average}
+    \overline{u}_j^n = \frac{1}{\Delta x} \int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_n) dx.
+\end{equation}
 
 \subsection{Finite Volume Methods for Conservation Laws}
 
-i heart fvm
+For finite difference methods, at each time $t_n$, we are computing a vector $U^n \in \R^N$ where the $j$-th component $U_j^n$ approximates the pointwise true solution $u_j^n$. In light of \eqref{burgers_integral} though, it is perhaps more natural to instead view $U_j^n$ as approximating the \emph{cell average} $\overline{u}_j^n$. This gives rise to what is known as a \emph{finite volume method}.
+
+If we integrate \eqref{burgers_integral} from time $t_n$ to $t_{n+1}$, we get
+\begin{align*}
+    \int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_{n+1}) dx = &\int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_{n}) dx \\
+    &- \left[ \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2},t)) dt - \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2},t)) dt \right].
+\end{align*}
+Dividing by $\Delta x$ and applying \eqref{cell_average} yields
+\begin{equation}
+    \overline{u}_j^{n+1} = \overline{u}_j^n - \frac{1}{\Delta x}\left[ \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2},t)) dt - \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2},t)) dt \right].
+\end{equation}
+
+The goal of a successful finite volume method then is to accurately model the flux through the boundaries of each cell. Explicitly, we want to find some numerical flux function $\mathcal{F}$ so that 
+\[
+    \mathcal{F}(U_j^n, U_{j+1}^n) \approx \frac{1}{\Delta t} \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2}, t)) dt \qquad \mathcal{F}(U_{j-1}^n, U_{j}^n) \approx \frac{1}{\Delta t} \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2}, t)) dt.
+\]
+
+To this end, we say that a numerical method is in \emph{conservation form} if 
+\begin{equation}\label{conservation_form}
+    U_j^{n+1} = U_j^n - \frac{\Delta t}{\Delta x} \left[ \mathcal{F}(U_{j}^{n}, U_{j+1}^{n}) - \mathcal{F}(U_{j-1}^{n}, U_{j}^{n}) \right].
+\end{equation}
+Note that while this derivation comes about through the introduction of control volumes, we can also understand it through the lens of finite differences. Specifically, from \eqref{burgers_conservative} we get the relation
+\[
+    \frac{U_j^{n+1} - U_j^n}{\Delta t} + \frac{F_{j+1/2}^n - F_{j-1/2}^n}{\Delta x} = 0
+\]
+where $F_{j\pm1/2}^n \sim \mathcal{F}$ as before.
 
 \subsection{The REA Algorithm}
 
-more like diarrhea amirite
+The reconstruct-evolve-average algorithm (or REA for short)
+\begin{enumerate}
+    \item
+    
 
-\subsection{The Riemann Problem}
+    \item
 
-i got 99 problems and riemann is one
+
+    \item
+
+
+\end{enumerate}
+
+\subsection{The Riemann Problem and Discontinuous Solutions}
+
+\begin{equation}
+    F(u_L, u_R) = \begin{cases}
+        f(u_L) \qquad &s \geq 0 \\
+        f(u_R) \qquad &s < 0
+    \end{cases}
+\end{equation}
+
+\begin{equation}
+    s = \frac{f(u_R) - f(u_L)}{u_R - u_L}
+\end{equation}
+
+\begin{equation}
+    F(u_L, u_R) = \begin{cases}
+        \min_{u_l \leq u \leq u_R} f(u) \qquad & u_l \leq u_R \\
+        \max_{u_l \leq u \leq u_R} f(u) \qquad & u_l > u_R 
+    \end{cases}
+\end{equation}
 
 \begin{figure}
     \centering
@@ -167,77 +236,6 @@ where $ x_0 \in \R $. Evaluating at $t=0$, we have that $x(0) = x_0$. Now assumi
     x(t) = g(x_0)t + x_0
 \end{equation}
 which are exactly those characteristic curves we initially sought.
-
-\subsection{Conservation Laws}
-We will begin by introducing notation and then move on to discussion about the theory. First we discretize the interval $[-L,L]$ into a vector of $N$ points $x_j$ by defining a mesh width $\Delta x = 2L/N$ so that 
-\[
-    x_j = -L + j\Delta x.
-\]
-Note that we are assuming periodic boundary conditions so that $x_0 = x_{N}$, and so we have exactly $N$ points. For reasons that will soon become clear, we are also interested in the half-steps $x_{j\pm1/2}$ defined by
-\[
-    x_{j\pm1/2} = x_j \pm \frac{\Delta x}{2}.
-\]
-
-We will also denote the time step by $\Delta t_n$ so that
-\[
-    t_n = n\Delta t_n.
-\]
-The exact formula for $\Delta t_n$ will remain undefined for now as it must be a variable time-step.
-
-We denote the \emph{pointwise values} of the true solution at the mesh point $(x_j, t_n)$ by 
-\[
-    u_j^n = u(x_j,t_n).
-\]
-For finite difference methods, at each time step $t_n$ we are computing a vector $U^n \in \R^N$ where the $j$-th component $U_j^n$ approximates the true solution $u_j^n$. Specifically for conservation laws though, it is perhaps more natural to instead view $U_j^n$ as approximating the \emph{cell average} $\bar{u}_j^n$ (see Figure 1) about the mesh point $(x_j,t_n)$ where
-\begin{equation}
-    \bar{u}_j^n = \frac{1}{\Delta x} \int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_n) dx.
-\end{equation}
-The motivation for this interpretation comes from the integral form of the conservation law\footnote{Interestingly, we are somewhat doing things backwards. The conservation law is derived from the integral form, and the PDE that satisfies it is a consequence of this integral form.} (2),
-\[
-    \frac{d}{dt} \int_{x_j-1/2}^{x_j+1/2} u(x,t)dx - \left[ f(u(x_{j-1/2},t)) - f(u(x_{j+1/2},t)) \right] = 0,
-\]
-for which a derivation can be found in \cite{leveque1992}, pp. 14-16. Integrating from $t_n$ to $t_{n+1}$ yields
-\begin{align*}
-    \int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_{n+1}) dx = &\int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_{n}) dx \\
-    &- \left[ \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2},t)) dx - \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2},t)) dx \right].
-\end{align*}
-Now dividing by $\Delta x$ and using the definition of (3) results in
-\begin{equation}
-    \bar{u}_j^{n+1} = \bar{u}_j^n - \frac{1}{\Delta x}\left[ \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2},t)) dx - \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2},t)) dx \right].
-\end{equation}
-
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}[b]{0.8\textwidth}
-        \centering
-        \includegraphics[width=0.90\textwidth]{control_volumes.png}
-        \caption{Illustration of the cell averages. Inspired from Fig 4.1, p.65 of \cite{leveque2002}.}
-    \end{subfigure}
-
-    \vspace{\floatsep}
-
-    \begin{subfigure}{0.8\textwidth}
-        \centering
-        \includegraphics[width=0.90\textwidth]{step-wise_approx.png}
-        \caption{Illustration of the step-wise nature the cell-average approximation to $u(x_j,t_n)$ has. Inspired from Fig 17.9, p.418 of \cite{iserles2009}.}
-    \end{subfigure}
-    \caption{}
-\end{figure}
-
-The goal of a successful numerical scheme then is to accurately model the flux through the boundaries of each cell. Explicitly, we want to find some numerical flux function $\mathcal{F}$ so that 
-\[
-    \mathcal{F}(U_j^n, U_{j+1}^n) \approx \frac{1}{\Delta t} \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2}, t)) dt \qquad \mathcal{F}(U_{j-1}^n, U_{j}^n) \approx \frac{1}{\Delta t} \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2}, t)) dt.
-\]
-
-To this end, we say that a numerical method is in \emph{conservation form} if 
-\[
-    U_j^{n+1} = U_j^n - \frac{\Delta t}{\Delta x} \left[ \mathcal{F}(U_{j}^{n}, U_{j+1}^{n}) - \mathcal{F}(U_{j-1}^{n}, U_{j}^{n}) \right].
-\]
-Note that while this derivation comes about through the introduction of control volumes, and hence falls under the umbrella of \emph{finite volume methods}, we can also understand it through the lens of finite differences. Specifically, from (2) we get the relation
-\[
-    \frac{U_j^{n+1} - U_j^n}{\Delta t} + \frac{F_{j+1/2}^n - F_{j-1/2}^n}{\Delta x} = 0
-\]
-where $F_{j\pm1/2}^n \sim \mathcal{F}$ as before. Hence these methods can be understood to be first-order accurate in time and `somewhat' second-order accurate in space. We say `somewhat' because the reality is complicated.
 
 % bibliography
 \nocite{choksi2022}
