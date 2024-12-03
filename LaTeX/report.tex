@@ -66,15 +66,15 @@ We will begin by introducing some notation that will be used throughout this sec
     x_j = a + j\Delta x.
 \end{equation}
 Note that we are assuming periodic boundary conditions so that $x_0 = x_{N}$, and so we have exactly $N$ points. For reasons that will soon become clear, we are also interested in the half-steps $x_{j\pm1/2}$ defined by
-\[
+\begin{equation}
     x_{j\pm1/2} = x_j \pm \frac{\Delta x}{2}.
-\]
+\end{equation}
 Time will simply be denoted by $t_n$, with no explicit formula. This is because for stability purposes (see Section 2.4), we require a variable time-step.
 
 We denote the \emph{pointwise values} of the true solution $u$ which solves \eqref{burgers_conservative} exactly at the mesh point $(x_j, t_n)$ by 
-\[
+\begin{equation}
     u_j^n = u(x_j,t_n).
-\]
+\end{equation}
 The \emph{cell averages} about the mesh point $(x_j, t_n)$ are then defined by
 \begin{equation}\label{cell_average}
     \overline{u}_j^n = \frac{1}{\Delta x} \int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_n) dx.
@@ -85,47 +85,74 @@ The \emph{cell averages} about the mesh point $(x_j, t_n)$ are then defined by
 For finite difference methods, at each time $t_n$, we are computing a vector $U^n \in \R^N$ where the $j$-th component $U_j^n$ approximates the pointwise true solution $u_j^n$. In light of \eqref{burgers_integral} though, it is perhaps more natural to instead view $U_j^n$ as approximating the \emph{cell average} $\overline{u}_j^n$. This gives rise to what is known as a \emph{finite volume method}.
 
 If we integrate \eqref{burgers_integral} from time $t_n$ to $t_{n+1}$, we get
-\begin{align*}
-    \int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_{n+1}) dx = &\int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_{n}) dx \\
+\begin{align}
+    \int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_{n+1}) dx = &\int_{x_{j-1/2}}^{x_{j+1/2}} u(x,t_{n}) dx \nonumber \\
     &- \left[ \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2},t)) dt - \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2},t)) dt \right].
-\end{align*}
+\end{align}
 Dividing by $\Delta x$ and applying \eqref{cell_average} yields
 \begin{equation}
     \overline{u}_j^{n+1} = \overline{u}_j^n - \frac{1}{\Delta x}\left[ \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2},t)) dt - \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2},t)) dt \right].
 \end{equation}
 
 The goal of a successful finite volume method then is to accurately model the flux through the boundaries of each cell. Explicitly, we want to find some numerical flux function $\mathcal{F}$ so that 
-\[
-    \mathcal{F}(U_j^n, U_{j+1}^n) \approx \frac{1}{\Delta t} \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2}, t)) dt \qquad \mathcal{F}(U_{j-1}^n, U_{j}^n) \approx \frac{1}{\Delta t} \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2}, t)) dt.
-\]
+\begin{align}
+    \mathcal{F}(U_j^n, U_{j+1}^n) &\approx \frac{1}{\Delta t} \int_{t_n}^{t_{n+1}} f(u(x_{j+1/2}, t)) dt \\
+    \mathcal{F}(U_{j-1}^n, U_{j}^n) &\approx \frac{1}{\Delta t} \int_{t_n}^{t_{n+1}} f(u(x_{j-1/2}, t)) dt.
+\end{align}
 
 To this end, we say that a numerical method is in \emph{conservation form} if 
 \begin{equation}\label{conservation_form}
     U_j^{n+1} = U_j^n - \frac{\Delta t}{\Delta x} \left[ \mathcal{F}(U_{j}^{n}, U_{j+1}^{n}) - \mathcal{F}(U_{j-1}^{n}, U_{j}^{n}) \right].
 \end{equation}
 Note that while this derivation comes about through the introduction of control volumes, we can also understand it through the lens of finite differences. Specifically, from \eqref{burgers_conservative} we get the relation
-\[
+\begin{equation}
     \frac{U_j^{n+1} - U_j^n}{\Delta t} + \frac{F_{j+1/2}^n - F_{j-1/2}^n}{\Delta x} = 0
-\]
+\end{equation}
 where $F_{j\pm1/2}^n \sim \mathcal{F}$ as before.
 
-\subsection{The REA Algorithm}
+\subsection{The REA Algorithm and Godunov's Method}
 
-The reconstruct-evolve-average algorithm (or REA for short)
+The reconstruct-evolve-average (REA) algorithm is characterized by the following three-step process:
 \begin{enumerate}
     \item
-    
+    First we \emph{reconstruct} a piecewise polynomial function $p(x,t_n)$ from the approximate cell averages $U_j^n$. Though we will be only considering piecewise linear polynomials, there is no explicit limit on the degree of these $p$.
 
     \item
-
+    Using the $p(x,t_n)$ as initial data, we then \emph{evolve} the PDE until time $t_{n+1}$ into the future.
 
     \item
-
-
+    Finally, we \emph{average} the updated polynomial over each grid cell, obtaining new approximate cell averages
+    \begin{equation}
+        U_j^{n+1} = \frac{1}{\Delta x} \int_{x_{j-1/2}}^{x_{j+1/2}} p(x,t_{n+1}) dx.
+    \end{equation}
 \end{enumerate}
 
-\subsection{The Riemann Problem and Discontinuous Solutions}
+\subsection{The Riemann Problem and Managing Discontinuous Solutions}
+A Riemann problem is an initial value problem (IVP) for a conservation equation where the supplied initial profile consists of piecewise constant data with a single discontinuity. Typically, the discontinuity is located at $x=0$, so that the initial data is of the form
+\begin{equation}
+    u(x,0) = \begin{cases}
+        u_L \qquad & x < 0 \\
+        u_R \qquad & x \geq 0
+    \end{cases}
+\end{equation}
+This problem is very important for the inviscid Burgers' equation specifically because for those points sufficiently away from the discontinuity, we can solve it exactly via the method of characteristics (see Appendix A.2). How we resolve those points near the discontinuity is a bit more complicated. One can appeal to the Lax entropy condition\footnote{See \cite{leveque2002}, Section 11.2 for more information.} which states that, for the inviscid Burgers' equation, a discontinuity propagating with speed $s$ is valid if $u_L > u_R$ (see Figure 1a). The exact speed of this discontinuity, referred to as a shock, is determined by the Rankine-Hugoniot condition\footnote{See \cite{leveque2002}, Section 11.8 for a derivation.}, which for the inviscid Burgers' equation is simply $s = (u_L + u_R)/2$. The solution to this problem is then
+\begin{equation}\label{shockwave}
+    u(x,t) = \begin{cases}
+        u_L \qquad & x < st \\
+        u_R \qquad & x \geq st
+    \end{cases}
+\end{equation}
 
+Alternatively, one may recall that \eqref{burgers_long} can be interpreted as the inviscid limit of Burgers' equation. By admitting a small, but nonzero, $\epsilon > 0$, one can study the behavior near a discontinuity. This is formally known as the vanishing-viscosity approach. By doing so experimentally, the Lax entropy condition is corroborated and the profile \eqref{shockwave} is seen. Moreover, the vanishing-viscosity approach reveals the correct behavior when $u_L < u_R$; a rarefaction wave (see Figure 1b). 
+\begin{equation}
+    u(x,t) = \begin{cases}
+        u_L \qquad & x < u_Lt \\
+        x/t \qquad & u_Lt \leq x \leq u_Rt \\
+        u_R \qquad & x > u_Rt
+    \end{cases}
+\end{equation}
+
+\begin{comment}
 \begin{equation}
     F(u_L, u_R) = \begin{cases}
         f(u_L) \qquad &s \geq 0 \\
@@ -134,31 +161,28 @@ The reconstruct-evolve-average algorithm (or REA for short)
 \end{equation}
 
 \begin{equation}
-    s = \frac{f(u_R) - f(u_L)}{u_R - u_L}
-\end{equation}
-
-\begin{equation}
     F(u_L, u_R) = \begin{cases}
-        \min_{u_l \leq u \leq u_R} f(u) \qquad & u_l \leq u_R \\
-        \max_{u_l \leq u \leq u_R} f(u) \qquad & u_l > u_R 
+        \min_{u \in [u_L,u_R]} f(u) \qquad & u_L \leq u_R \\
+        \max_{u \in [u_R,u_L]} f(u) \qquad & u_L > u_R 
     \end{cases}
 \end{equation}
+\end{comment}
 
 \begin{figure}
     \centering
     \begin{subfigure}{.48\textwidth}
         \centering
         \includegraphics[width=1.0\textwidth]{riemann_shockwave.png}
-        \caption{caption 1}
+        \caption{Resolution of a Riemann problem when $u_L > u_R > 0$. A shockwave propagates to the right with speed $(u_L+u_R)/2$.}
         \label{fig:shock}
     \end{subfigure}\hfill
     \begin{subfigure}{.48\textwidth}
         \centering
         \includegraphics[width=1\textwidth]{riemann_rarefaction.png}
-        \caption{caption 2}
+        \caption{Resolution of a Riemann problem when $0<u_L<u_R$. A rarefaction wave fills the void left by the characteristics.}
         \label{fig:rarefaction}
     \end{subfigure}
-    \caption{main caption}
+    \caption{Resolving the discontinuity in a Riemann problem.}
     \label{fig:riemann_discontinuities}
 \end{figure}
 
@@ -172,10 +196,68 @@ shit i dont fully understand how to implement
 
 \section{Experiments}
 
-where our code crashed and burns
+We will be verifying our theory experimentally on five different problems. The first two are Riemann problems which are `easy' in the sense that a MATH student familiar with the relevant material should be able to characterize the solution completely. The consequence of this is that we can hard-code the solutions to compare against with respect to accuracy, both for our methods and for the Physics Informed Neural Network (PINN).
+
+In contrast, we are unable to resolve the `hard' problems analytically and so cannot directly compute the accuracy of our methods. Instead, we will have to employ numerical convergence studies and rely on the soundness of the underlying theory.
 
 \subsection{`Easy' Problems}
 
+\subsubsection{Riemann problem: shockwave}
+
+The initial value problem (IVP) of interest is
+\begin{equation}\label{IVP:shock}
+    \begin{cases}
+        u_t + uu_x = 0 \quad x \in (-1,1), \: t > 0 \\
+        u(-1,t) = 1 \\
+        u(1,t) = 0 \\
+        u(x,0) = u_0(x)
+    \end{cases} 
+\end{equation}
+where 
+\begin{equation}
+    u_0(x) = \begin{cases}
+        1 \qquad & x < 0 \\
+        0 \qquad & x \geq 0
+    \end{cases}
+\end{equation}
+
+Following our prior discussion, the analytical solution is characterized by a shockwave, and is given by
+\begin{equation}
+    u(x,t) = \begin{cases}
+        1 \qquad & x < t/2 \\
+        0 \qquad & x \geq t/2
+    \end{cases}
+\end{equation}
+
+\subsubsection{Riemann problem: rarefaction wave}
+
+We modify the \eqref{IVP:shock} slightly so that its solution exhibits a rarefaction fan
+\begin{equation}\label{IVP:shock}
+    \begin{cases}
+        u_t + uu_x = 0 \quad x \in (-1,1), \: t > 0 \\
+        u(-1,t) = 0 \\
+        u(1,t) = 1 \\
+        u(x,0) = u_0(x)
+    \end{cases} 
+\end{equation}
+where 
+\begin{equation}
+    u_0(x) = \begin{cases}
+        0 \qquad & x < 0 \\
+        1 \qquad & x \geq 0
+    \end{cases}
+\end{equation}
+
+Instead of a shockwave, the analytical solution is characterized by a rarefaction wave, and is given by
+\begin{equation}
+    u(x,t) = \begin{cases}
+        0 \qquad & x < 0 \\
+        x/t \qquad & 0 \leq x \leq t \\
+        1 \qquad & x > t
+    \end{cases}
+\end{equation}
+
+\begin{comment}
 \begin{itemize}
 	\item \textbf{Riemann Problem}
 	
@@ -212,9 +294,52 @@ where our code crashed and burns
 	\end{equation}
 	
 \end{itemize}
+\end{comment}
 
 \subsection{`Hard' Problems}
 
+\subsubsection{Square wave}
+
+Our first IVP has the form
+\begin{equation}
+    \begin{cases}
+        u_t + uu_x = 0, \quad x \in [0, 2\pi], \: t>0 \\
+        u(x,0) = u_0(x) \\
+        u(0,t) = u(2\pi,t), \quad t > 0
+    \end{cases}
+\end{equation}
+where
+\begin{equation}
+    u_0(x) = 
+    \begin{cases}
+        1 \qquad &  x \in [\pi/2, 3\pi/2] \\
+        0 \qquad & \text{otherwise} 
+    \end{cases}
+\end{equation}
+
+\subsubsection{Sine wave}
+
+The IVP is given by
+\begin{equation}
+    \begin{cases}
+        u_t + uu_x = 0, \quad x \in [0, 2\pi], \: t>0 \\
+        u(x,0) = \sin(x) \\
+        u(0,t) = u(2\pi,t), \quad t > 0
+    \end{cases}
+\end{equation}
+
+\subsubsection{Sine-squared wave}
+
+We modify the prior IVP slightly
+\begin{equation}
+    \begin{cases}
+        u_t + uu_x = 0, \quad x \in [0, 2\pi], \: t>0 \\
+        u(x,0) = \sin^2(x/2) \\
+        u(0,t) = u(2\pi,t), \quad t > 0
+    \end{cases}
+\end{equation}
+
+\begin{comment}
 \begin{itemize}
 	\item \textbf{Sinusoidal Initial Conditions}
 	
@@ -258,6 +383,7 @@ where our code crashed and burns
 	\end{equation}
 		
 \end{itemize}
+\end{comment}
 
 \section{Conclusion}
 
