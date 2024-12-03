@@ -107,11 +107,88 @@ where our code crashed and burns
 
 \subsection{`Easy' Problems}
 
-basic riemann problems
+\begin{itemize}
+	\item \textbf{Riemann Problem}
+	
+	The Riemann Problem studies the formation of shocks. The initial condition is as follows
+	\begin{equation}
+		u(x,0) = 
+	    \begin{cases}
+	      	u_L & \text{if } x < 0 \\
+			u_R & \text{if } x \geq 0
+	    \end{cases}
+	\end{equation}
+	where $u_L > u_R$. In our experiment, we set $u_L = 1$ and $u_R = 0$. The true solution is
+	\begin{equation}
+		u(x,t) = 
+	    \begin{cases}
+	      	u_L = 1 & \text{if } x < st \\
+			u_R = 0 & \text{if } x \geq st
+	    \end{cases}
+	\end{equation}
+	where \[s = \frac{u_L + u_R}{2}\ = \frac{1}{2}\] is the speed of the shock. This is known as the Rankine-Hugoniot condition. In our experiment, we shifted right spacially by $\pi$ and used the boundaries $[0, 2\pi]$. This made our plots more consistent with the harder problems, which are all $[0, 2\pi]$ periodic.
+	
+	RESULTSSSSSSSSSSSSSSSS
+	
+	\item \textbf{Rarefaction Wave}
+	
+	If we take the Riemann Problem but instead have $u_L < u_R$, a shock will not form. In this case we get what is called a rarefaction wave. In our experiment, we set $u_L = 0$ and $u_R = 1$. The true solution is
+	\begin{equation}
+		u(x,t) = 
+	    \begin{cases}
+	      	u_L = 0 & \text{if } x \leq {u_L}t \\
+			\frac{x}{t} & \text{if } {u_L}t < x < {u_R}t \\
+			u_R = 1 & \text{if } x \geq {u_R}t
+	    \end{cases}
+	\end{equation}
+	
+\end{itemize}
 
 \subsection{`Hard' Problems}
 
-smooth curvy boies
+\begin{itemize}
+	\item \textbf{Sinusoidal Initial Conditions}
+	
+	We experimented with the following IVP
+	\begin{equation}
+	    \begin{cases}
+	      	u_t + uu_x = 0, \: x \in [0, 2\pi], \: t>0 \\
+			u(x,0) = sin(x) \\
+			u(0,t) = u(2\pi,t) \: \forall t
+	    \end{cases}
+	\end{equation}
+	
+	\item \textbf{Squared Sinusoidal Initial Conditions}
+	
+	We experimented with the following IVP
+	\begin{equation}
+	    \begin{cases}
+	      	u_t + uu_x = 0, \: x \in [0, 2\pi], \: t>0 \\
+			u(x,0) = sin^2(\frac{x}{2}) \\
+			u(0,t) = u(2\pi,t) \: \forall t
+	    \end{cases}
+	\end{equation}
+	
+	\item \textbf{Squared Sinusoidal Initial Conditions}
+	
+	We experimented with the following IVP
+	\begin{equation}
+	    \begin{cases}
+	      	u_t + uu_x = 0, \: x \in [0, 2\pi], \: t>0 \\
+			u(x,0) = g(x) \\
+			u(0,t) = u(2\pi,t) \: \forall t
+	    \end{cases}
+	\end{equation}
+	where
+	\begin{equation}
+		g(x) = 
+	    \begin{cases}
+	      	1 & \text{if } x \in [\frac{\pi}{2}, \frac{3\pi}{2}] \\
+			0 & \text{otherwise} 
+	    \end{cases}
+	\end{equation}
+		
+\end{itemize}
 
 \section{Conclusion}
 
