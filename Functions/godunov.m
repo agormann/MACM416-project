@@ -1,5 +1,5 @@
 function [T,U] = godunov(X,u0,tf)
-%UNTITLED Summary of this function goes here
+%GODUNOV Summary of this function goes here
 %   Detailed explanation goes here
 
 f = @(u) 0.5*u.^2; % flux function
