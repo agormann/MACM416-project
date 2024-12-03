@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{myproject}[2024/10/07 Modified article class]
 
-\LoadClass[12pt]{article}
+\LoadClass[11pt]{article}
 
 % PACKAGES
 \RequirePackage[
