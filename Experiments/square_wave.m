@@ -47,14 +47,14 @@ for i = 2:length(times)
 end
 
 f = figure();
-f.Position = [100,100,360,240];
+f.Position = [100,100,480,240];
 
 for i = 1:length(times)
     plot(X, U(indices(i),:), 'r:', 'LineWidth', 2, 'DisplayName', "Square wave");
     
     % plot settings
     title(sprintf('t = %.3f', times(i)));
-    legend('Location', 'northeast');
+    legend('Location', 'east');
     grid on;
     xlabel('x');
     xticks([0 pi/2 pi 3*pi/2 2*pi]);

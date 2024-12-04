@@ -47,7 +47,7 @@ for i = 2:length(times)
 end
 
 f = figure();
-f.Position = [100,100,360,240];
+f.Position = [100,100,480,240];
 
 for i = 1:length(times)
     plot(X, U(indices(i),:), 'r:', 'LineWidth', 2, 'DisplayName', "Sine wave");

@@ -16,7 +16,7 @@ R = riemann(uL,uR,X,T); % exact solution
 padding = 0.10*(max(u0)-min(u0));
 
 f = figure();
-f.Position = [100 100 640 480];
+f.Position = [100 100 480 360];
 v = VideoWriter([pwd '/Movies/riemann_shock.mp4'], 'MPEG-4');
 v.FrameRate = 30;
 open(v);

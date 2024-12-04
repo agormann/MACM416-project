@@ -386,7 +386,7 @@ When using a PINN approach, the solution is somewhat oscillatory at the steep gr
 \subsubsection{Square wave}
 
 Our first IVP has the form
-\begin{equation}
+\begin{equation}\label{square_wave}
     \begin{cases}
         u_t + uu_x = 0, \quad x \in [0, 2\pi], \: t>0 \\
         u(x,0) = u_0(x) \\
@@ -405,7 +405,7 @@ where
 \subsubsection{Sine wave}
 
 The IVP is given by
-\begin{equation}
+\begin{equation}\label{sine_wave}
     \begin{cases}
         u_t + uu_x = 0, \quad x \in [0, 2\pi], \: t>0 \\
         u(x,0) = \sin(x) \\
@@ -416,59 +416,13 @@ The IVP is given by
 \subsubsection{Sine-squared wave}
 
 We modify the prior IVP slightly
-\begin{equation}
+\begin{equation}\label{sine-squared_wave}
     \begin{cases}
         u_t + uu_x = 0, \quad x \in [0, 2\pi], \: t>0 \\
         u(x,0) = \sin^2(x) \\
         u(0,t) = u(2\pi,t), \quad t > 0
     \end{cases}
 \end{equation}
-
-\begin{comment}
-\begin{itemize}
-	\item \textbf{Sinusoidal Initial Conditions}
-	
-	We experimented with the following IVP
-	\begin{equation}
-	    \begin{cases}
-	      	u_t + uu_x = 0, \: x \in [0, 2\pi], \: t>0 \\
-			u(x,0) = sin(x) \\
-			u(0,t) = u(2\pi,t) \: \forall t
-	    \end{cases}
-	\end{equation}
-	
-	\item \textbf{Squared Sinusoidal Initial Conditions}
-	
-	We experimented with the following IVP
-	\begin{equation}
-	    \begin{cases}
-	      	u_t + uu_x = 0, \: x \in [0, 2\pi], \: t>0 \\
-			u(x,0) = sin^2(\frac{x}{2}) \\
-			u(0,t) = u(2\pi,t) \: \forall t
-	    \end{cases}
-	\end{equation}
-	
-	\item \textbf{Squared Sinusoidal Initial Conditions}
-	
-	We experimented with the following IVP
-	\begin{equation}
-	    \begin{cases}
-	      	u_t + uu_x = 0, \: x \in [0, 2\pi], \: t>0 \\
-			u(x,0) = g(x) \\
-			u(0,t) = u(2\pi,t) \: \forall t
-	    \end{cases}
-	\end{equation}
-	where
-	\begin{equation}
-		g(x) = 
-	    \begin{cases}
-	      	1 & \text{if } x \in [\frac{\pi}{2}, \frac{3\pi}{2}] \\
-			0 & \text{otherwise} 
-	    \end{cases}
-	\end{equation}
-		
-\end{itemize}
-\end{comment}
 
 \section{Phyisics Informed Neural Network Scheme}
 
@@ -481,6 +435,84 @@ this shit was way harder than i thought it would be
 \newpage
 \appendix
 \section{Appendix}
+\subsection{Figures}
+
+\subsubsection{`Hard' Problems}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.40\textwidth}
+       \includegraphics[width=1\linewidth]{square_wave_0.png}
+       \caption{}
+    \end{subfigure}\qquad
+    \begin{subfigure}[b]{0.40\textwidth}
+       \includegraphics[width=1\linewidth]{square_wave_2.png}
+       \caption{}
+    \end{subfigure}
+
+    \vspace{\floatsep}
+
+    \begin{subfigure}[b]{0.40\textwidth}
+       \includegraphics[width=1\linewidth]{square_wave_5.png}
+       \caption{}
+    \end{subfigure}\qquad
+    \begin{subfigure}[b]{0.40\textwidth}
+       \includegraphics[width=1\linewidth]{square_wave_10.png}
+       \caption{}
+    \end{subfigure}
+    \caption{Numerical solutions to problem \eqref{square_wave}. Snapshots are taken at times $t = 0, 2, 5, 10$.}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.40\textwidth}
+       \includegraphics[width=1\linewidth]{sine_wave_0.png}
+       \caption{}
+    \end{subfigure}\qquad
+    \begin{subfigure}[b]{0.40\textwidth}
+       \includegraphics[width=1\linewidth]{sine_wave_2.png}
+       \caption{}
+    \end{subfigure}
+
+    \vspace{\floatsep}
+
+    \begin{subfigure}[b]{0.40\textwidth}
+       \includegraphics[width=1\linewidth]{sine_wave_5.png}
+       \caption{}
+    \end{subfigure}\qquad
+    \begin{subfigure}[b]{0.40\textwidth}
+       \includegraphics[width=1\linewidth]{sine_wave_10.png}
+       \caption{}
+    \end{subfigure}
+    \caption{Numerical solutions to problem \eqref{sine_wave}. Snapshots are taken at times $t = 0, 2, 5, 10$.}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.40\textwidth}
+       \includegraphics[width=1\linewidth]{sine-squared_wave_0.png}
+       \caption{}
+    \end{subfigure}\qquad
+    \begin{subfigure}[b]{0.40\textwidth}
+       \includegraphics[width=1\linewidth]{sine-squared_wave_2.png}
+       \caption{}
+    \end{subfigure}
+
+    \vspace{\floatsep}
+
+    \begin{subfigure}[b]{0.40\textwidth}
+       \includegraphics[width=1\linewidth]{sine-squared_wave_5.png}
+       \caption{}
+    \end{subfigure}\qquad
+    \begin{subfigure}[b]{0.40\textwidth}
+       \includegraphics[width=1\linewidth]{sine-squared_wave_10.png}
+       \caption{}
+    \end{subfigure}
+    \caption{Numerical solutions to problem \eqref{sine-squared_wave}. Snapshots are taken at times $t = 0, 2, 5, 10$.}
+\end{figure}
+
+\pagebreak
 \subsection{Code}
 
 All project code can be found on our GitHub page: \url{https://github.com/agormann/MACM416-project}. As a courtesy, we have also included our code in this document, below.
