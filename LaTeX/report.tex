@@ -128,6 +128,15 @@ The reconstruct-evolve-average (REA) algorithm is characterized by the following
     \end{equation}
 \end{enumerate}
 
+For the basic Godunov method, we employ piecewise-constant polynomials $p(x,t_n)$. We say basic, because it is possible to obtain higher-order accuracy by utilizing piecewise-linear polynomials. Due to the added complexity, we will not be exploring this any further. The numerical flux function $\mathcal{F}$ is defined by
+\begin{equation}
+    \mathcal{F}(u_L, u_R) = \begin{cases}
+        \min_{u \in [u_L,u_R]} f(u) \qquad & u_L \leq u_R \\
+        \max_{u \in [u_R,u_L]} f(u) \qquad & u_L > u_R 
+    \end{cases}
+\end{equation}
+The notation $u_L$ and $u_R$ will become more clear in the next section. 
+
 \subsection{The Riemann Problem and Managing Discontinuous Solutions}
 A Riemann problem is an initial value problem (IVP) for a conservation equation where the supplied initial profile consists of piecewise constant data with a single discontinuity. Typically, the discontinuity is located at $x=0$, so that the initial data is of the form
 \begin{equation}
@@ -165,12 +174,7 @@ Alternatively, one may recall that \eqref{burgers_long} can be interpreted as th
     \end{cases}
 \end{equation}
 
-\begin{equation}
-    F(u_L, u_R) = \begin{cases}
-        \min_{u \in [u_L,u_R]} f(u) \qquad & u_L \leq u_R \\
-        \max_{u \in [u_R,u_L]} f(u) \qquad & u_L > u_R 
-    \end{cases}
-\end{equation}
+
 \end{comment}
 
 
@@ -309,7 +313,7 @@ When using the PINN approach, we acheived decent results. However, these results
 \subsubsection{Riemann problem: rarefaction wave}
 
 We modify the \eqref{IVP:shock} slightly so that its solution exhibits a rarefaction fan
-\begin{equation}\label{IVP:shock}
+\begin{equation}\label{IVP:rarefaction}
     \begin{cases}
         u_t + uu_x = 0 \quad x \in (-\pi,\pi), \: t > 0 \\
         u(-\pi,t) = 0 \\
@@ -382,7 +386,7 @@ When using a PINN approach, the solution is somewhat oscillatory at the steep gr
 
 
 \subsection{`Hard' Problems}
-
+Snapshots of the results from the numerical solver can be found in Appendix A.1 (we ran out of space in the main document).
 \subsubsection{Square wave}
 
 Our first IVP has the form
@@ -402,6 +406,8 @@ where
     \end{cases}
 \end{equation}
 
+ The solution consists of a shockwave propagating to the right along with a rarefaction wave trailing behind. As time elapses, the rarefaction wave eventually catches up to the shock wave and the profile devolves into a sawtooth wave. While it is not possible to compare this solution to an analytical one, we have varied the number of grid cells in an attempt to measure convergence. We certainly see no spurious phenomena, so we can be confident that our solution is accurate to \emph{some} weak solution.
+
 \subsubsection{Sine wave}
 
 The IVP is given by
@@ -413,6 +419,8 @@ The IVP is given by
     \end{cases}
 \end{equation}
 
+The solution consists of a stationary shockwave. This is because the initial profile is symmetric and so the shock speed propagating to the right (from the positive profile), and the shock speed propagating to the left (from the negative profile), cancel out. The initial profile converges to a weak solution.
+
 \subsubsection{Sine-squared wave}
 
 We modify the prior IVP slightly
@@ -423,6 +431,8 @@ We modify the prior IVP slightly
         u(0,t) = u(2\pi,t), \quad t > 0
     \end{cases}
 \end{equation}
+
+The solution consists of shockwaves propagating to the right with rarefaction waves trailing behind. The initial profile converges to a weak solution.
 
 \section{Phyisics Informed Neural Network Scheme}
 
