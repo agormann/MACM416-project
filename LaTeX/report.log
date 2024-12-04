@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.10.6)  3 DEC 2024 09:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.10.6)  3 DEC 2024 10:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -790,7 +790,14 @@ Package translations Info: No language package found. I am going to use `englis
 h' as default language. on input line 21.
 \@quotelevel=\count462
 \@quotereset=\count463
- (./report.aux)
+ (./report.aux
+
+LaTeX Warning: Label `IVP:shock' multiply defined.
+
+
+LaTeX Warning: Label `IVP:shock@cref' multiply defined.
+
+)
 \openout1 = `report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
@@ -944,38 +951,27 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 LaTeX Warning: Citation 'leveque2002' on page 2 undefined on input line 58.
 
-[2]
-
-LaTeX Warning: Reference `cell_average' on page 3 undefined on input line 92.
-
-[3]
+[2] [3]
 
 LaTeX Warning: Citation 'leveque2002' on page 4 undefined on input line 138.
 
 
 LaTeX Warning: Citation 'leveque2002' on page 4 undefined on input line 138.
 
-
-LaTeX Warning: Reference `shockwave' on page 4 undefined on input line 146.
-
-<../Figures/riemann_shockwave.png, id=156, 628.3475pt x 512.91624pt>
+<../Figures/riemann_shockwave.png, id=178, 628.3475pt x 512.91624pt>
 File: ../Figures/riemann_shockwave.png Graphic file (type png)
 <use ../Figures/riemann_shockwave.png>
 Package pdftex.def Info: ../Figures/riemann_shockwave.png  used on input line 1
 75.
 (pdftex.def)             Requested size: 225.4804pt x 184.05489pt.
-<../Figures/riemann_rarefaction.png, id=157, 627.34375pt x 512.91624pt>
+<../Figures/riemann_rarefaction.png, id=179, 627.34375pt x 512.91624pt>
 File: ../Figures/riemann_rarefaction.png Graphic file (type png)
 <use ../Figures/riemann_rarefaction.png>
 Package pdftex.def Info: ../Figures/riemann_rarefaction.png  used on input line
  181.
 (pdftex.def)             Requested size: 225.4804pt x 184.3523pt.
-[4]
-
-LaTeX Warning: Reference `IVP:shock' on page 5 undefined on input line 234.
-
-[5 <../Figures/riemann_shockwave.png (PNG copy)> <../Figures/riemann_rarefactio
-n.png (PNG copy)>] [6]
+[4] [5 <../Figures/riemann_shockwave.png (PNG copy)> <../Figures/riemann_rarefa
+ction.png (PNG copy)>] [6]
 Overfull \hbox (13.10828pt too wide) in paragraph at lines 397--398
 \OT1/cmr/m/n/10.95 All project code can be found on our GitHub page: []$https :
  / / github . com / agormann / MACM416-[]project$[].
@@ -1006,16 +1002,10 @@ L3 programming layer <2024-02-20>
 LaTeX Warning: There were undefined references.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
-
-Package rerunfilecheck Warning: File `report.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `report.out':
-(rerunfilecheck)             Before: E23BD0718E5D11B6CE278FEEEDE5864B;2172
-(rerunfilecheck)             After:  97EBE59D85164E5B5025F311B85ABED2;3180.
+Package rerunfilecheck Info: File `report.out' has not changed.
+(rerunfilecheck)             Checksum: 97EBE59D85164E5B5025F311B85ABED2;3180.
 
 Package biblatex Warning: Please (re)run Biber on the file:
 (biblatex)                report
@@ -1026,38 +1016,34 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 28350 strings out of 474115
- 552528 string characters out of 5747696
- 1943190 words of memory out of 5000000
- 50338 multiletter control sequences out of 15000+600000
+ 28353 strings out of 474115
+ 552603 string characters out of 5747696
+ 1944190 words of memory out of 5000000
+ 50342 multiletter control sequences out of 15000+600000
  576124 words of font info for 102 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  94i,10n,107p,1151b,5052s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{subsection.A.3} has been referenced but does not ex
-ist, replaced by a fixed one
-
-<c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texli
-ve/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2024/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb><c:/texlive/2024/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmmi6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmmi7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.p
-fb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/tex
-live/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2024/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2024/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2024/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmr9.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/c
-msy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb>
-<c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texliv
-e/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><c:/texlive/2024/te
-xmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on report.pdf (7 pages, 300306 bytes).
+<c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/tex
+live/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2024
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb><c:/texlive/2024/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmmi6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmmi7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8
+.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/t
+exlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/202
+4/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2024/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2024/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmr9.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pf
+b><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texl
+ive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><c:/texlive/2024/
+texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on report.pdf (7 pages, 300955 bytes).
 PDF statistics:
- 298 PDF objects out of 1000 (max. 8388607)
- 246 compressed objects within 3 object streams
- 70 named destinations out of 1000 (max. 500000)
- 131 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 316 PDF objects out of 1000 (max. 8388607)
+ 264 compressed objects within 3 object streams
+ 69 named destinations out of 1000 (max. 500000)
+ 163 words of extra memory for PDF output out of 10000 (max. 10000000)
 
