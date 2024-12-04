@@ -1,40 +1,40 @@
-% PINN FOR INVISCID BURGERS
+% PINN FOR INVISCID BURGERS (u0 = {0 if x < 0, 1 if x > 0})
 % Adapted from: https://www.mathworks.com/help/deeplearning/ug/solve-partial-differential-equations-with-lbfgs-method-and-deep-learning.html
 
 %% TRAINING DATA GENERATION
-
-% Parameters
+    
+% Parameters                    
 numBoundaryConditionPoints = [25, 25];
 numInitialConditionPoints = 50;
 numInternalCollocationPoints = 10000;
 
 % Time points to enforce boundary conditions
-x0BC1 = -1 * ones(1, numBoundaryConditionPoints(1));
-x0BC2 =  1 * ones(1, numBoundaryConditionPoints(2)); 
+x0BC1 = -pi * ones(1, numBoundaryConditionPoints(1));        % x vals on left
+x0BC2 = pi * ones(1, numBoundaryConditionPoints(2));    % x vals on right
 
-t0BC1 = linspace(0, 1, numBoundaryConditionPoints(1));
-t0BC2 = linspace(0, 1, numBoundaryConditionPoints(2));
+t0BC1 = linspace(0, 4, numBoundaryConditionPoints(1)); % times
+t0BC2 = linspace(0, 4, numBoundaryConditionPoints(2)); 
 
-u0BC1 = ones(1, numBoundaryConditionPoints(1));     % u(-1,t) = 1 (left of shock)
-u0BC2 = zeros(1, numBoundaryConditionPoints(2));    % u(1,t) = 0 (right of shock)
+u0BC1 = zeros(1, numBoundaryConditionPoints(1));         % left = 0
+u0BC2 = ones(1, numBoundaryConditionPoints(2));        % right = 1
 
 % Spatial points to enforce initial conditions
-x0IC = linspace(-1, 1, numInitialConditionPoints); 
-t0IC = zeros(1, numInitialConditionPoints); 
-u0IC = double(x0IC < 0); 
+x0IC = linspace(-pi, pi, numInitialConditionPoints);  % Spatial points in [-pi, pi]
+t0IC = zeros(1, numInitialConditionPoints);           % Time = 0
+u0IC = double(x0IC > 0);                             % Initial condition: 0 for x < 0, 1 otherwise
 
 % Group together boundary and initial condition data
 X0 = [x0IC, x0BC1, x0BC2];
 T0 = [t0IC, t0BC1, t0BC2];
 U0 = [u0IC, u0BC1, u0BC2];
 
-% Uniformly sample 10 000 points (t,x) ∈ (0,1) × (-1,1)
+% Uniformly sample 10 000 points (t,x) ∈ (0,10) × (0,2pi)
 % to enforce the output of the network to fulfill the PDE
 pointSet = sobolset(2);
 points = net(pointSet,numInternalCollocationPoints);
 
-dataX = 2*points(:,1)-1;
-dataT = points(:,2);
+dataX = 2*pi*points(:,1)-pi;
+dataT = 4*points(:,2);
 
 % array datastore containing training data
 ds = arrayDatastore([dataX dataT]);
@@ -72,8 +72,8 @@ parameters.("fc" + numLayers + "_Bias") = initializeZeros([1 1],'double');
 
 options = optimoptions('fmincon', ...
     'HessianApproximation','lbfgs', ...
-    'MaxIterations',7500, ...
-    'MaxFunctionEvaluations',7500, ...
+    'MaxIterations',5000, ...
+    'MaxFunctionEvaluations',5000, ...
     'OptimalityTolerance',1e-5, ...
     'SpecifyObjectiveGradient',true);
 
@@ -138,28 +138,74 @@ end
 subplot(2,2,2)
 legend('Predicted','True')
 
+%% MOVIE
+
+% movie parameters
+numFrames = 100;                
+timeSteps = linspace(0, 4, numFrames); 
+numPredictions = 1001;
+XMovie = linspace(-pi, pi, numPredictions);
+
+% video stuff
+videoFileName = 'moviviv.mp4';
+videoWriter = VideoWriter(videoFileName, 'MPEG-4');
+videoWriter.FrameRate = 10;
+open(videoWriter);
+
+figure;
+for t = timeSteps
+
+    % plot approximation
+    TMovie = t * ones(1, numPredictions);
+    dlXMovie = dlarray(XMovie, 'CB');
+    dlTMovie = dlarray(TMovie, 'CB');
+    dlUPred = model(parameters, dlXMovie, dlTMovie);
+    plot(XMovie, extractdata(dlUPred), 'b-', 'LineWidth', 2);
+    hold on;
+
+    % plot true solutionm
+    Utrue = solveBurgers(XMovie, t);
+    plot(XMovie, Utrue, 'r--', 'LineWidth', 2);
+    hold off;
+
+    % Calculate error.
+    err = norm(extractdata(dlUPred) - Utrue);
+    relErr = norm(extractdata(dlUPred) - Utrue) / norm(Utrue);
+
+    %plot info stuff
+    title(['t = ', num2str(t), ', Error_{abs} = ', num2str(err), ', Error_{rel} = ', num2str(relErr)]);
+    xlabel('x');
+    ylabel('u(x, t)');
+    legend('Predicted', 'True');
+    ylim([-0.1, 1.1]);
+    grid on;
+
+    % write frames
+    frame = getframe(gcf);
+    writeVideo(videoWriter, frame);
+end
+
+close(videoWriter);
+
 %% SOLVE INV BURGERS FUNC
 
 function U = solveBurgers(X, t)
 
-% Shock speed
-s = 1/2;
+    uL = 0;  
+    uR = 1;  
+    U = zeros(size(X));
 
-% Initialize solution
-U = zeros(size(X));
+    for i = 1:numel(X)
+        x = X(i);
 
-% Loop over x values
-for i = 1:numel(X)
-    x = X(i);
-    
-    % Check if point lies to the left or right of the shock
-    if x < s * t
-        U(i) = 1; % Left of the shock
-    else
-        U(i) = 0; % Right of the shock
+        if x <= uL * t 
+            U(i) = uL;  
+        elseif x > uR * t
+            U(i) = uR;
+        else
+            U(i) = uL + (uR - uL) * (x / t);
+        end
     end
-end
-
 end
 
 %% OBJECTIVE FUNC
