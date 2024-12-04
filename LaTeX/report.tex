@@ -152,6 +152,10 @@ Alternatively, one may recall that \eqref{burgers_long} can be interpreted as th
     \end{cases}
 \end{equation}
 
+
+
+
+
 \begin{comment}
 \begin{equation}
     F(u_L, u_R) = \begin{cases}
@@ -167,6 +171,12 @@ Alternatively, one may recall that \eqref{burgers_long} can be interpreted as th
     \end{cases}
 \end{equation}
 \end{comment}
+
+
+
+
+
+
 
 \begin{figure}
     \centering
@@ -207,7 +217,7 @@ In contrast, we are unable to resolve the `hard' problems analytically and so ca
 The initial value problem (IVP) of interest is
 \begin{equation}\label{IVP:shock}
     \begin{cases}
-        u_t + uu_x = 0 \quad x \in (-1,1), \: t > 0 \\
+        u_t + uu_x = 0 \quad x \in (-\pi,\pi), \: t > 0 \\
         u(-\pi,t) = 1 \\
         u(\pi,t) = 0 \\
         u(x,0) = u_0(x)
@@ -228,13 +238,46 @@ Following our prior discussion, the analytical solution is characterized by a sh
         0 \qquad & x \geq t/2
     \end{cases}
 \end{equation}
+For this problem, we attempted both a numerical approach and a PINN approach. The numerical solution was highly accurate and required little time to compute even when using 1000 grid points. Some plots are shown below.
+
+\begin{figure}
+\centering
+    \begin{subfigure}{.48\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{t0_shockwave.png}
+        \caption{Initial state for the Riemann Problem.}
+    \end{subfigure}\hfill
+    \begin{subfigure}{.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{t05_shockwave.png}
+        \caption{As $t$ increases, the error is small and consistent.}
+    \end{subfigure}
+    \caption{The numerical solution of the shockwave Riemann problem.}
+\end{figure}
+
+When using the PINN approach, we acheived decent results. However, these results are far worse than the numerical solution and took much longer to compute as they required training a neural network. Our neural network used 9 layers with 20 neurons at each layer, as well as 10 000 internal collocation points during training. The code used for the PINN approach in this problem and the next were adapted from the MathWorks example ``Solve PDE Using Physics-Informed Neural Network.'' Some plots are shown below.
+
+\begin{figure}
+\centering
+    \begin{subfigure}{.48\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{t0_NN_shockwave.png}
+        \caption{Initial state. Notice that the neural network cannot acheive perfect accuracy at $t=0$.}
+    \end{subfigure}\hfill
+    \begin{subfigure}{.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{t137_NN_shockwave.png}
+        \caption{As $t$ increases, the error is larger than in the numerical solution, but still consistent.}
+    \end{subfigure}
+    \caption{The PINN of the shockwave Riemann problem.}
+\end{figure}
 
 \subsubsection{Riemann problem: rarefaction wave}
 
 We modify the \eqref{IVP:shock} slightly so that its solution exhibits a rarefaction fan
 \begin{equation}\label{IVP:shock}
     \begin{cases}
-        u_t + uu_x = 0 \quad x \in (-1,1), \: t > 0 \\
+        u_t + uu_x = 0 \quad x \in (-\pi,\pi), \: t > 0 \\
         u(-\pi,t) = 0 \\
         u(\pi,t) = 1 \\
         u(x,0) = u_0(x)
@@ -257,44 +300,32 @@ Instead of a shockwave, the analytical solution is characterized by a rarefactio
     \end{cases}
 \end{equation}
 
-\begin{comment}
-\begin{itemize}
-	\item \textbf{Riemann Problem}
-	
-	The Riemann Problem studies the formation of shocks. The initial condition is as follows
-	\begin{equation}
-		u(x,0) = 
-	    \begin{cases}
-	      	u_L & \text{if } x < 0 \\
-			u_R & \text{if } x \geq 0
-	    \end{cases}
-	\end{equation}
-	where $u_L > u_R$. In our experiment, we set $u_L = 1$ and $u_R = 0$. The true solution is
-	\begin{equation}
-		u(x,t) = 
-	    \begin{cases}
-	      	u_L = 1 & \text{if } x < st \\
-			u_R = 0 & \text{if } x \geq st
-	    \end{cases}
-	\end{equation}
-	where \[s = \frac{u_L + u_R}{2}\ = \frac{1}{2}\] is the speed of the shock. This is known as the Rankine-Hugoniot condition. In our experiment, we shifted right spacially by $\pi$ and used the boundaries $[0, 2\pi]$. This made our plots more consistent with the harder problems, which are all $[0, 2\pi]$ periodic.
-	
-	RESULTSSSSSSSSSSSSSSSS
-	
-	\item \textbf{Rarefaction Wave}
-	
-	If we take the Riemann Problem but instead have $u_L < u_R$, a shock will not form. In this case we get what is called a rarefaction wave. In our experiment, we set $u_L = 0$ and $u_R = 1$. The true solution is
-	\begin{equation}
-		u(x,t) = 
-	    \begin{cases}
-	      	u_L = 0 & \text{if } x \leq {u_L}t \\
-			\frac{x}{t} & \text{if } {u_L}t < x < {u_R}t \\
-			u_R = 1 & \text{if } x \geq {u_R}t
-	    \end{cases}
-	\end{equation}
-	
-\end{itemize}
-\end{comment}
+Once again, we attempted both a numerical approach and a PINN approach. Once again, the numerical approach was fast, accurate, and consistent. Some plots are shown below.
+
+\begin{figure}
+\centering
+    \begin{subfigure}{.48\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{t0_NN_shockwave.png}
+        \caption{Initial state. Notice that the neural network cannot acheive perfect accuracy at $t=0$.}
+    \end{subfigure}\hfill
+    \begin{subfigure}{.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{t137_NN_shockwave.png}
+        \caption{As $t$ increases, the error is larger than in the numerical solution, but still consistent.}
+    \end{subfigure}
+    \caption{The numerical solution of the rarefraction wave Riemann problem.}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
 
 \subsection{`Hard' Problems}
 
@@ -384,6 +415,10 @@ We modify the prior IVP slightly
 		
 \end{itemize}
 \end{comment}
+
+\section{Phyisics Informed Neural Network Scheme}
+
+While a PINN approach worked decently for 
 
 \section{Conclusion}
 
