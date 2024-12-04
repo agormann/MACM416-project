@@ -293,14 +293,14 @@ For this problem, we attempted both a numerical approach and a PINN approach. Th
     \caption{The numerical solution of the shockwave Riemann problem.}
 \end{figure}
 
-When using the PINN approach, we acheived decent results. However, these results are far worse than the numerical solution and took much longer to compute as they required training a neural network. Our neural network used 9 layers with 20 neurons at each layer, as well as 10 000 internal collocation points during training. The code used for the PINN approach in this problem and the next were adapted from the MathWorks example ``Solve PDE Using Physics-Informed Neural Network.'' Plots are shown in figure 3.
+When using the PINN approach, we achieved decent results. However, these results are far worse than the numerical solution and took much longer to compute as they required training a neural network. Our neural network used 9 layers with 20 neurons at each layer, as well as 10 000 internal collocation points during training. The code used for the PINN approach in this problem and the next were adapted from the MathWorks example ``Solve PDE Using Physics-Informed Neural Network.'' Plots are shown in figure 3.
 
 \begin{figure}
 \centering
     \begin{subfigure}{.48\textwidth}
         \centering
         \includegraphics[width=1.0\textwidth]{t0_NN_shockwave.png}
-        \caption{Initial state. Notice that the neural network cannot acheive perfect accuracy at $t=0$.}
+        \caption{Initial state. Notice that the neural network cannot achieve perfect accuracy at $t=0$.}
     \end{subfigure}\hfill
     \begin{subfigure}{.48\textwidth}
         \centering
@@ -352,7 +352,7 @@ Once again, we attempted both a numerical approach and a PINN approach. Once aga
         \includegraphics[width=1\textwidth]{t1_rarefraction.png}
         \caption{Numerical solution matches true solution.}
     \end{subfigure}
-    \caption{The numerical solution of the rarefraction wave Riemann problem.}
+    \caption{The numerical solution of the rarefaction wave Riemann problem.}
 \end{figure}
 
 When using a PINN approach, the solution is somewhat oscillatory at the steep gradient around $t=0$. However, as time progresses, this oscillation seems to dissipate. We presume that the neural network struggles with the steeper gradients near $t=0$ because the gradient of $u$ is computed as a part of the loss during training. Naturally, this becomes less of a problem as $t$ increases because the gradient becomes more shallow and changes at a slower rate. The PINN solution can also be seen lagging behind the true solution. Presumably, this is a result of the changing gradient and would no longer be an issue for $t \rightarrow \infty $.  Plots are shown in figure 5.
@@ -374,7 +374,7 @@ When using a PINN approach, the solution is somewhat oscillatory at the steep gr
         \includegraphics[width=1\textwidth]{t137_NN_rarefraction.png}
         \caption{The oscillation subsides and the PINN solution lags behind the true solution.}
     \end{subfigure}
-    \caption{The PINN solution of the rarefraction wave Riemann problem.}
+    \caption{The PINN solution of the rarefaction wave Riemann problem.}
 \end{figure}
 
 \subsection{`Hard' Problems}
@@ -426,10 +426,9 @@ We modify the prior IVP slightly
 
 The solution consists of shockwaves propagating to the right with rarefaction waves trailing behind. The initial profile converges to a weak solution.
 
-
 \section{Conclusion}
 
-Applying the finite volume Godunov scheme proved to be an effective way to solve the Inviscid Burgers' equation numerically. The PINN approach proved to be weaker in all aspects; lower accuracy, the occurance of oscillations, and a much higher computation time. Additionally, applying the PINN approach to our harder problems was unsuccessful, particularly at the periodic boundaries.
+Applying the finite volume Godunov scheme proved to be an effective way to solve the Inviscid Burgers' equation numerically. The PINN approach proved to be weaker in all aspects; lower accuracy, the occurrence of oscillations, and a much higher computation time. Additionally, applying the PINN approach to our harder problems was unsuccessful, particularly at the periodic boundaries.
 
 Given more time, an area that we would like to explore specifically are those methods known as `flux limiters' or `slope limiters.' The reason is that Godunov's method as we have implemented it is only first-order accurate with respect to solving for the smooth portions of the profile. By applying a flux limiter, we would be able to get second-order accuracy on the smooth portions. The reason why we were not able to achieve this in the allotted time is that the underlying theory is rather delicate. That is to say that great care must be taken in implementing these modifications or else they will perform worse than the basic Godunov method.
 
