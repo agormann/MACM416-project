@@ -352,7 +352,27 @@ Once again, we attempted both a numerical approach and a PINN approach. Once aga
     \caption{The numerical solution of the rarefraction wave Riemann problem.}
 \end{figure}
 
+When using a PINN approach, the solution is somewhat oscillatory at the steep gradient around $t=0$. However, as time progresses, this oscillation seems to dissipate. We presume that the neural network struggles with the steeper gradients near $t=0$ because the gradient of $u$ is computed as a part of the loss during training. Naturally, this becomes less of a problem as $t$ increases because the gradient becomes more shallow and changes at a slower rate. The PINN solution can also be seen lagging behind the true solution. Presumably, this is a result of the changing gradient and would no longer be an issue for $t \rightarrow \infty $. Some plots are shown below.
 
+\begin{figure}
+\centering
+    \begin{subfigure}{.48\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{t0_NN_rarefraction.png}
+        \caption{Initial state. Notice that a small oscillation is already being exhibited in $u_L$.}
+    \end{subfigure}\hfill
+    \begin{subfigure}{.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{t016_NN_rarefraction.png}
+        \caption{The oscillation becomes extreme as the gradient changes rapidly.}
+    \end{subfigure}
+    \begin{subfigure}{.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{t137_NN_rarefraction.png}
+        \caption{The oscillation subsides and the PINN solution lags behind the true solution.}
+    \end{subfigure}
+    \caption{The PINN solution of the rarefraction wave Riemann problem.}
+\end{figure}
 
 
 
