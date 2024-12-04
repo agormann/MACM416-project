@@ -276,7 +276,7 @@ Following our prior discussion, the analytical solution is characterized by a sh
         0 \qquad & x \geq t/2
     \end{cases}
 \end{equation}
-For this problem, we attempted both a numerical approach and a PINN approach. The numerical solution was highly accurate and required little time to compute even when using 1000 grid points. Some plots are shown below.
+For this problem, we attempted both a numerical approach and a PINN approach. The numerical solution was highly accurate and required little time to compute even when using 1000 grid points. Plots are shown in figure 2.
 
 \begin{figure}
 \centering
@@ -293,7 +293,7 @@ For this problem, we attempted both a numerical approach and a PINN approach. Th
     \caption{The numerical solution of the shockwave Riemann problem.}
 \end{figure}
 
-When using the PINN approach, we acheived decent results. However, these results are far worse than the numerical solution and took much longer to compute as they required training a neural network. Our neural network used 9 layers with 20 neurons at each layer, as well as 10 000 internal collocation points during training. The code used for the PINN approach in this problem and the next were adapted from the MathWorks example ``Solve PDE Using Physics-Informed Neural Network.'' Some plots are shown below.
+When using the PINN approach, we acheived decent results. However, these results are far worse than the numerical solution and took much longer to compute as they required training a neural network. Our neural network used 9 layers with 20 neurons at each layer, as well as 10 000 internal collocation points during training. The code used for the PINN approach in this problem and the next were adapted from the MathWorks example ``Solve PDE Using Physics-Informed Neural Network.'' Plots are shown in figure 3.
 
 \begin{figure}
 \centering
@@ -338,7 +338,7 @@ Instead of a shockwave, the analytical solution is characterized by a rarefactio
     \end{cases}
 \end{equation}
 
-Once again, we attempted both a numerical approach and a PINN approach. Once again, the numerical approach was fast, accurate, and consistent. Some plots are shown below.
+Once again, we attempted both a numerical approach and a PINN approach. Once again, the numerical approach was fast, accurate, and consistent.  Plots are shown in figure 4.
 
 \begin{figure}
 \centering
@@ -355,7 +355,7 @@ Once again, we attempted both a numerical approach and a PINN approach. Once aga
     \caption{The numerical solution of the rarefraction wave Riemann problem.}
 \end{figure}
 
-When using a PINN approach, the solution is somewhat oscillatory at the steep gradient around $t=0$. However, as time progresses, this oscillation seems to dissipate. We presume that the neural network struggles with the steeper gradients near $t=0$ because the gradient of $u$ is computed as a part of the loss during training. Naturally, this becomes less of a problem as $t$ increases because the gradient becomes more shallow and changes at a slower rate. The PINN solution can also be seen lagging behind the true solution. Presumably, this is a result of the changing gradient and would no longer be an issue for $t \rightarrow \infty $. Some plots are shown below.
+When using a PINN approach, the solution is somewhat oscillatory at the steep gradient around $t=0$. However, as time progresses, this oscillation seems to dissipate. We presume that the neural network struggles with the steeper gradients near $t=0$ because the gradient of $u$ is computed as a part of the loss during training. Naturally, this becomes less of a problem as $t$ increases because the gradient becomes more shallow and changes at a slower rate. The PINN solution can also be seen lagging behind the true solution. Presumably, this is a result of the changing gradient and would no longer be an issue for $t \rightarrow \infty $.  Plots are shown in figure 5.
 
 \begin{figure}
 \centering
@@ -426,9 +426,6 @@ We modify the prior IVP slightly
 
 The solution consists of shockwaves propagating to the right with rarefaction waves trailing behind. The initial profile converges to a weak solution.
 
-\section{Phyisics Informed Neural Network Scheme}
-
-While a PINN approach worked decently for 
 
 \section{Conclusion}
 
