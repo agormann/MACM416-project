@@ -340,7 +340,6 @@ Instead of a shockwave, the analytical solution is characterized by a rarefactio
 
 Once again, we attempted both a numerical approach and a PINN approach. Once again, the numerical approach was fast, accurate, and consistent. Some plots are shown below.
 
-
 \begin{figure}
 \centering
     \begin{subfigure}{.48\textwidth}
@@ -377,13 +376,6 @@ When using a PINN approach, the solution is somewhat oscillatory at the steep gr
     \end{subfigure}
     \caption{The PINN solution of the rarefraction wave Riemann problem.}
 \end{figure}
-
-
-
-
-
-
-
 
 \subsection{`Hard' Problems}
 Snapshots of the results from the numerical solver can be found in Appendix A.1 (we ran out of space in the main document).
@@ -441,6 +433,8 @@ While a PINN approach worked decently for
 \section{Conclusion}
 
 Applying the finite volume Godunov scheme proved to be an effective way to solve the Inviscid Burgers' equation numerically. The PINN approach proved to be weaker in all aspects; lower accuracy, the occurance of oscillations, and a much higher computation time. Additionally, applying the PINN approach to our harder problems was unsuccessful, particularly at the periodic boundaries.
+
+Given more time, an area that we would like to explore specifically are those methods known as `flux limiters' or `slope limiters.' The reason is that Godunov's method as we have implemented it is only first-order accurate with respect to solving for the smooth portions of the profile. By applying a flux limiter, we would be able to get second-order accuracy on the smooth portions. The reason why we were not able to achieve this in the allotted time is that the underlying theory is rather delicate. That is to say that great care must be taken in implementing these modifications or else they will perform worse than the basic Godunov method.
 
 \newpage
 \appendix
