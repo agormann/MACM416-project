@@ -10,6 +10,7 @@ t = 0;
 U = u;
 T = t;
 
+% dt = dx/max(abs(u)); % fix dt for mesh refinement
 while t < tf
     dt = dx/max(abs(u)); % compute dt (dynamic)
 

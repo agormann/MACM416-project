@@ -15,10 +15,10 @@ U = [u0; zeros(length(T)-1,nx)];
 
 if uL > uR
     % shockwave
-    s = (uL+uR)/2;
+    s = (uL+uR)/2; % rankine-hugoniot condition
     for i = 2:length(T)
         t = T(i);
-        U(i,:) = uL*(X<s*t) + uR*(X>=s*t);
+        U(i,:) = uL*(X<s*t) + uR*(X>=s*t); 
     end
 elseif uL < uR
     % rarefaction wave

@@ -2,7 +2,7 @@ clear;
 clc;
 close all;
 %% Setup
-nx = 1000;
+nx = 400;
 dx = 4/nx;
 X = dx*(-nx/2:nx/2-1);
 
@@ -10,13 +10,13 @@ uL = 1;
 uR = 0;
 u0 = uL*(X<0) + uR*(X>0);
 %% Solving
-[T,U] = godunov_dirichlet(X,u0,1); % numerical solution
+[T,U] = godunov_dirichlet(X,u0,2); % numerical solution
 R = riemann(uL,uR,X,T); % exact solution
 %% Plotting
 padding = 0.10*(max(u0)-min(u0));
 
 f = figure();
-f.Position = [100 100 640 640];
+f.Position = [100 100 640 480];
 v = VideoWriter([pwd '/Movies/riemann_shock.mp4'], 'MPEG-4');
 v.FrameRate = 30;
 open(v);
