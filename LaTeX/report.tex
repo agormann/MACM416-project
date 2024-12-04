@@ -357,26 +357,6 @@ Once again, we attempted both a numerical approach and a PINN approach. Once aga
 
 When using a PINN approach, the solution is somewhat oscillatory at the steep gradient around $t=0$. However, as time progresses, this oscillation seems to dissipate. We presume that the neural network struggles with the steeper gradients near $t=0$ because the gradient of $u$ is computed as a part of the loss during training. Naturally, this becomes less of a problem as $t$ increases because the gradient becomes more shallow and changes at a slower rate. The PINN solution can also be seen lagging behind the true solution. Presumably, this is a result of the changing gradient and would no longer be an issue for $t \rightarrow \infty $.  Plots are shown in figure 5.
 
-\begin{figure}
-\centering
-    \begin{subfigure}{.48\textwidth}
-        \centering
-        \includegraphics[width=1.0\textwidth]{t0_NN_rarefraction.png}
-        \caption{Initial state. Notice that a small oscillation is already being exhibited in $u_L$.}
-    \end{subfigure}\hfill
-    \begin{subfigure}{.48\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{t016_NN_rarefraction.png}
-        \caption{The oscillation becomes extreme as the gradient changes rapidly.}
-    \end{subfigure}
-    \begin{subfigure}{.48\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{t137_NN_rarefraction.png}
-        \caption{The oscillation subsides and the PINN solution lags behind the true solution.}
-    \end{subfigure}
-    \caption{The PINN solution of the rarefaction wave Riemann problem.}
-\end{figure}
-
 \subsection{`Hard' Problems}
 Snapshots of the results from the numerical solver can be found in Appendix A.1 (we ran out of space in the main document).
 \subsubsection{Square wave}
@@ -430,6 +410,8 @@ The solution consists of shockwaves propagating to the right with rarefaction wa
 
 Applying the finite volume Godunov scheme proved to be an effective way to solve the Inviscid Burgers' equation numerically. The PINN approach proved to be weaker in all aspects; lower accuracy, the occurrence of oscillations, and a much higher computation time. Additionally, applying the PINN approach to our harder problems was unsuccessful, particularly at the periodic boundaries.
 
+Prior to the Godunov scheme, we attempted to make use of the Lax-Friedrichs method. While we did format the scheme in terms of the conservation form, we were unable to get accurate results out of it. Specifically, the scheme ended up being far too dissipative and so the correct handling of discontinuities was not achieved.
+
 Given more time, an area that we would like to explore specifically are those methods known as `flux limiters' or `slope limiters.' The reason is that Godunov's method as we have implemented it is only first-order accurate with respect to solving for the smooth portions of the profile. By applying a flux limiter, we would be able to get second-order accuracy on the smooth portions. The reason why we were not able to achieve this in the allotted time is that the underlying theory is rather delicate. That is to say that great care must be taken in implementing these modifications or else they will perform worse than the basic Godunov method.
 
 \newpage
@@ -437,6 +419,29 @@ Given more time, an area that we would like to explore specifically are those me
 \section{Appendix}
 \subsection{Figures}
 
+\subsubsection{`Easy' Problems}
+
+\begin{figure}[h]
+    \centering
+        \begin{subfigure}{.48\textwidth}
+            \centering
+            \includegraphics[width=1.0\textwidth]{t0_NN_rarefraction.png}
+            \caption{Initial state. Notice that a small oscillation is already being exhibited in $u_L$.}
+        \end{subfigure}\hfill
+        \begin{subfigure}{.48\textwidth}
+            \centering
+            \includegraphics[width=1\textwidth]{t016_NN_rarefraction.png}
+            \caption{The oscillation becomes extreme as the gradient changes rapidly.}
+        \end{subfigure}
+        \begin{subfigure}{.48\textwidth}
+            \centering
+            \includegraphics[width=1\textwidth]{t137_NN_rarefraction.png}
+            \caption{The oscillation subsides and the PINN solution lags behind the true solution.}
+        \end{subfigure}
+        \caption{The PINN solution of the rarefaction wave Riemann problem.}
+    \end{figure}
+
+\pagebreak
 \subsubsection{`Hard' Problems}
 
 \begin{figure}[h]
