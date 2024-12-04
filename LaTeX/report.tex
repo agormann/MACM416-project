@@ -515,10 +515,147 @@ this shit was way harder than i thought it would be
 \pagebreak
 \subsection{Code}
 
-All project code can be found on our GitHub page: \url{https://github.com/agormann/MACM416-project}. As a courtesy, we have also included our code in this document, below.
+All project code can be found on our GitHub page: \url{https://github.com/agormann/MACM416-project}.
+\begin{lstlisting}[
+frame=single,
+numbers=left,
+style=Matlab-Pyglike]
+function [T,U] = godunov(X,u0,tf)
+%GODUNOV Solves the inviscid burgers equation via the finite volume method.
+% Input
+%   X := grid of x values
+%   u0 := initial profile
+%   tf := final time
+% Output
+%   T := time-steps that the problem was solved at
+%   U := profiles at times t in T
 
-[insert code]
+% Setup
+f = @(u) 0.5*u.^2; % flux function
+nx = length(X);
+dx = abs(X(1)-X(2));
+u = u0;
+t = 0;
+U = u;
+T = t;
 
+% Solution
+% dt = dx/max(abs(u)); % fix dt for mesh refinement
+while t < tf
+    dt = dx/max(abs(u)); % compute dt (dynamic)
+    flux = f(u); % initial flux
+    F = zeros(size(u)); % flux update
+    % solving riemann problem exactly
+    for i = 1:nx
+        uL = u(i);
+        fuL = flux(i);
+        uR = u(mod(i,nx)+1);
+        fuR = flux(mod(i,nx)+1);
+        if uL <= uR
+            F(i) = min(fuL,fuR);
+        elseif uL > uR
+            F(i) = max(fuL,fuR);
+        else
+            error('OOPSIE WOOPSIE!!')
+        end
+    end
+    u = u - dt/dx*(F - circshift(F,1)); % conservative update
+    t = t + dt; U = [U; u]; T = [T; t];
+end
+end
+\end{lstlisting}
+
+\pagebreak
+\begin{lstlisting}[
+frame=single,
+numbers=left,
+style=Matlab-Pyglike]
+function [T,U] = godunov_dirichlet(X,u0,tf)
+%GODUNOV_DIRICHLET Solves the inviscid burgers equation via the finite volume method. 
+% Dirichlet boundary conditions are assumed.
+% Input
+%   X := grid of x values
+%   u0 := initial profile
+%   tf := final time
+% Output
+%   T := time-steps that the problem was solved at
+%   U := profiles at times t in T
+
+% Setup
+f = @(u) 0.5*u.^2; % flux function
+nx = length(X);
+dx = abs(X(1)-X(2));
+u = u0;
+t = 0;
+U = u;
+T = t;
+
+% Solution
+while t < tf
+    dt = dx/max(abs(u)); % compute dt (dynamic)
+    flux = f(u); % initial flux
+    F = zeros(size(u)); % flux update
+    % solving riemann problem exactly
+    for i = 1:nx-1
+        uL = u(i);
+        fuL = flux(i);
+        uR = u(mod(i,nx)+1);
+        fuR = flux(mod(i,nx)+1);
+        if uL <= uR
+            F(i) = min(fuL,fuR);
+        elseif uL > uR
+            F(i) = max(fuL,fuR);
+        else
+            error('OOPSIE WOOPSIE!!')
+        end
+    end
+    for i = 2:nx-1
+        u(i) = u(i) - dt/dx*(F(i)-F(i-1)); % conservative update
+    end
+    t = t + dt; U = [U; u]; T = [T; t];
+end
+end
+\end{lstlisting}
+
+\pagebreak
+\begin{lstlisting}[
+frame=single,
+numbers=left,
+style=Matlab-Pyglike]
+function U = riemann(uL,uR,X,T)
+%RIEMANN Solves a riemann problem exactly.
+% Input
+%   uL := value of profile to the left of 0
+%   uR := value of profile to the right of 0
+%   X := grid of x values
+%   T := specific times to solve the problem at
+% Output
+%   U := matrix whose rows are the solution to the riemann problem at times specified in T.
+
+nx = length(X);
+u0 = uL*(X<0) + uR*(X>=0);
+
+U = [u0; zeros(length(T)-1,nx)];
+
+if uL > uR
+    % shockwave
+    s = (uL+uR)/2; % rankine-hugoniot condition
+    for i = 2:length(T)
+        t = T(i);
+        U(i,:) = uL*(X<s*t) + uR*(X>=s*t); 
+    end
+elseif uL < uR
+    % rarefaction wave
+    for i = 2:length(T)
+        t = T(i);
+        U(i,:) = uL*(X<uL*t) + (X/t).*((uL*t<=X)&(X<=uR*t)) + uR*(X>uR*t);
+    end
+end
+
+end
+\end{lstlisting}
+
+\pagebreak
 \subsection{Analytical Solution via the Method of Characteristics}
 
 We wish to solve the 1-D inviscid Burgers' equation analytically.
